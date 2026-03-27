@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flux Runner</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      // Suppress p5.sound worklet errors
+      window.addEventListener('error', (e) => {
+        if (e.message && e.message.includes('blob:null')) {
+          e.preventDefault();
+          return false;
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', (e) => {
+        if (e.reason && e.reason.toString().includes('worklet')) {
+          e.preventDefault();
+        }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/addons/p5.sound.min.js"></script>
+  </head>
+  <body>
+    <div id="game-container"></div>
+        <!-- load game source files in dependency order so that
+          things like ParticleSystem/Player/etc are defined
+          before the code that actually constructs them (p5canvas.js)
+          sketch.js contains configuration/helpers and must come
+          before everything else as it is referenced widely. -->
+        <script src="Monster Class"></script>
+       
+  </body>
+</html>
