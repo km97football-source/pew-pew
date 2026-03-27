@@ -1,31 +1,23 @@
 class Monster {
-  x: number;
-  y: number;
-  size: number;
-  speed: number;
-  health: number;
-  maxHealth: number;
-  alive: boolean;
-
-  constructor(x: number, y: number) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
 
     this.size = 40;
-    this.speed = random(1, 2); // movement speed
+    this.speed = random(1, 2); // p5.js random
     this.maxHealth = 50;
     this.health = this.maxHealth;
     this.alive = true;
   }
 
   // Move toward player
-  update(playerX: number, playerY: number) {
+  update(playerX, playerY) {
     if (!this.alive) return;
 
     let dx = playerX - this.x;
     let dy = playerY - this.y;
 
-    let distance = Math.sqrt(dx * dx + dy * dy);
+    let distance = dist(this.x, this.y, playerX, playerY);
 
     if (distance > 0) {
       this.x += (dx / distance) * this.speed;
@@ -33,18 +25,22 @@ class Monster {
     }
   }
 
-  // Draw monster
-  draw() {
+  // Display monster
+  display() {
     if (!this.alive) return;
 
     push();
-    fill(0, 150, 0); // green jungle monster
+
+    // Monster body
+    fill(0, 150, 0);
+    noStroke();
     ellipse(this.x, this.y, this.size);
 
-    // health bar
+    // Health bar background
     fill(255, 0, 0);
     rect(this.x - 20, this.y - 30, 40, 5);
 
+    // Health bar foreground
     fill(0, 255, 0);
     let healthWidth = (this.health / this.maxHealth) * 40;
     rect(this.x - 20, this.y - 30, healthWidth, 5);
@@ -52,8 +48,8 @@ class Monster {
     pop();
   }
 
-  // Take damage from shuriken
-  takeDamage(amount: number) {
+  // Take damage
+  takeDamage(amount) {
     this.health -= amount;
 
     if (this.health <= 0) {
@@ -61,14 +57,14 @@ class Monster {
     }
   }
 
-  // Check collision with player
-  hitsPlayer(playerX: number, playerY: number, playerSize: number): boolean {
+  // Collision with player
+  hitsPlayer(playerX, playerY, playerSize) {
     let d = dist(this.x, this.y, playerX, playerY);
     return d < this.size / 2 + playerSize / 2;
   }
 
-  // Check collision with shuriken
-  hitsShuriken(shurikenX: number, shurikenY: number, shurikenSize: number): boolean {
+  // Collision with shuriken
+  hitsShuriken(shurikenX, shurikenY, shurikenSize) {
     let d = dist(this.x, this.y, shurikenX, shurikenY);
     return d < this.size / 2 + shurikenSize / 2;
   }
