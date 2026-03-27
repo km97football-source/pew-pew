@@ -30,7 +30,7 @@ class Monster {
     if (!this.alive) return;
 
     push();
-    fill(0, 150, 0); // green jungle monster
+    fill('black'); // green jungle monster
     ellipse(this.x, this.y, this.size);
 
     // health bar

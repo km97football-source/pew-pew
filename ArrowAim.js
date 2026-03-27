@@ -14,7 +14,7 @@ class Arrow {
 		let endX = this.ninja.x + (dx / magnitude) * this.length;
 		let endY = this.ninja.y + (dy / magnitude) * this.length;
 
-		
+		stroke('green');
 		line(this.ninja.x, this.ninja.y, endX, endY);
 
 		let angle = atan2(dy, dx);
@@ -22,7 +22,7 @@ class Arrow {
 		push();
 		translate(endX, endY);
 		rotate(angle);
-		fill('black');
+		fill('green');
 		triangle(0, 0, -10, 5, -10, -5);
 		pop();
 	}
