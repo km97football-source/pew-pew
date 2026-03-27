@@ -1,13 +1,5 @@
 class Monster {
-  x: number;
-  y: number;
-  size: number;
-  speed: number;
-  health: number;
-  maxHealth: number;
-  alive: boolean;
-
-  constructor(x: number, y: number) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
 
@@ -19,7 +11,7 @@ class Monster {
   }
 
   // Move toward player
-  update(playerX: number, playerY: number) {
+  update(playerX, playerY) {
     if (!this.alive) return;
 
     let dx = playerX - this.x;
@@ -53,7 +45,7 @@ class Monster {
   }
 
   // Take damage from shuriken
-  takeDamage(amount: number) {
+  takeDamage(amount) {
     this.health -= amount;
 
     if (this.health <= 0) {
@@ -62,13 +54,13 @@ class Monster {
   }
 
   // Check collision with player
-  hitsPlayer(playerX: number, playerY: number, playerSize: number): boolean {
+  hitsPlayer(playerX, playerY, playerSize) {
     let d = dist(this.x, this.y, playerX, playerY);
     return d < this.size / 2 + playerSize / 2;
   }
 
   // Check collision with shuriken
-  hitsShuriken(shurikenX: number, shurikenY: number, shurikenSize: number): boolean {
+  hitsShuriken(shurikenX, shurikenY, shurikenSize) {
     let d = dist(this.x, this.y, shurikenX, shurikenY);
     return d < this.size / 2 + shurikenSize / 2;
   }
