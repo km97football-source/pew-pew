@@ -1,6 +1,15 @@
 let ninja, arrow, monster;
 let shurikens = [];
+let img;
+let lastShurikenTime = 0;
+let shurikenDelay = 250;
 
+function preload() {
+    img = loadImage('assests/169-1698857_water-shuriken-water-shuriken-png-transparent-png.png', 
+        () => console.log('Shuriken image loaded'),
+        () => console.error('Failed to load shuriken image')
+    );
+}
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
@@ -18,13 +27,18 @@ function draw() {
 	arrow.draw()
     monster.update(ninja1.x, ninja1.y);
     monster.draw()
-    
     for (let s of shurikens) {
+        s.update();
         s.draw();
     }
 }
 
 function mousePressed() {
-    let newShuriken = new Shuriken(ninja1.x, ninja1.y, 5);
-    shurikens.push(newShuriken);
+    let currentTime = millis();
+    if (currentTime - lastShurikenTime > shurikenDelay) {
+        let newShuriken = new Shuriken(ninja1.x, ninja1.y, 5, mouseX, mouseY);
+        shurikens.push(newShuriken);
+        lastShurikenTime = currentTime;
+        print("shuriken thrown");
+    }
 }
