@@ -29,8 +29,10 @@ class Shuriken {
     
     draw() {
         if (!this.active) return;
+
         if (img) {
-            image(img, this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+            noStroke();
+            image(img, this.x - this.size / 2, this.y - this.size / 2, this.size * 5, this.size * 5);
         }
     }
 }
