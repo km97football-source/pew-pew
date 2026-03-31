@@ -1,9 +1,9 @@
 
 
-
-
 class GameScreen {
   constructor() {
+    this.state = "menu"; // "menu" or "game"
+
     this.buttonW = 220;
     this.buttonH = 70;
 
@@ -12,40 +12,43 @@ class GameScreen {
   }
 
   update() {
-    // nothing needed for menu-only screen
+    // nothing needed yet
   }
 
   display() {
-    // draw your uploaded background
-    image(bgImg, 0, 0, width, height);
+    if (this.state === "menu") {
+      // MENU SCREEN
+      image(bgImg, 0, 0, width, height);
 
-    textAlign(CENTER, CENTER);
+      textAlign(CENTER, CENTER);
 
-    // TITLE (optional, remove if you want only buttons)
-    fill(255);
-    textSize(60);
-    text("Jungle Adventure", width / 2, height / 2 - 100);
+      fill(255);
+      textSize(60);
+      text("Jungle Adventure", width / 2, height / 2 - 100);
 
-    // BUTTON (hover effect)
-    if (this.isHovering(this.bx, this.by)) {
-      fill(255, 200, 0);
-    } else {
-      fill(255, 150, 0);
+      // hover effect
+      if (this.isHovering(this.bx, this.by)) {
+        fill(255, 200, 0);
+      } else {
+        fill(255, 150, 0);
+      }
+
+      rectMode(CENTER);
+      rect(this.bx, this.by, this.buttonW, this.buttonH, 12);
+
+      fill(0);
+      textSize(24);
+      text("START", this.bx, this.by);
+
+    } else if (this.state === "game") {
+      // BLANK SCREEN AFTER CLICK
+      background(0);
     }
-
-    rectMode(CENTER);
-    rect(this.bx, this.by, this.buttonW, this.buttonH, 12);
-
-    // button text
-    fill(0);
-    textSize(24);
-    text("START", this.bx, this.by);
   }
 
   handleMousePressed() {
-    if (this.isHovering(this.bx, this.by)) {
-      console.log("Start button clicked!");
-      // later you can switch screens here
+    if (this.state === "menu" && this.isHovering(this.bx, this.by)) {
+      this.state = "game"; // switch screen
     }
   }
 
@@ -73,8 +76,8 @@ function mousePressed() {
   game.handleMousePressed();
 }
 let game;
-let bgImg; // your background image
+let bgImg;
+
 function preload() {
-  // put your image file name here
-  bgImg = loadImage("+6s396.png");
+  bgImg = loadImage("+6s396.png"); // your background image
 }
