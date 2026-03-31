@@ -5,7 +5,7 @@ class Shuriken {
         this.x = x;
         this.y = y;
         this.speed = speed;
-        this.size = 20;
+        this.size = 15;
         this.active = true;
         
         let dx = targetX - x;
@@ -19,6 +19,12 @@ class Shuriken {
             this.vx = speed;
             this.vy = 0;
         }
+
+        this.sprite = new Sprite(shurikenimg, this.size, [
+			new SubImage(0, 10, 128, 118),
+			new SubImage(0, 10, 128, 118),
+			new SubImage(0, 10, 128, 118),
+		])
     }
     
     update() {
