@@ -1,73 +1,80 @@
+
+
+
+
 class GameScreen {
   constructor() {
-    this.title = "Jungle Adventure";
-
-    this.buttonX = width / 2;
-    this.buttonY = height / 2 + 60;
     this.buttonW = 220;
     this.buttonH = 70;
 
-    this.started = false; // track if game started
+    this.bx = width / 2;
+    this.by = height / 2 + 60;
   }
 
   update() {
-    // nothing yet
+    // nothing needed for menu-only screen
   }
 
   display() {
-    if (!this.started) {
-      // ===== TITLE SCREEN =====
-      background(20, 100, 40);
+    // draw your uploaded background
+    image(bgImg, 0, 0, width, height);
 
-      textAlign(CENTER, CENTER);
+    textAlign(CENTER, CENTER);
 
-      // Title
-      fill(255);
-      textSize(60);
-      text(this.title, width / 2, height / 2 - 100);
+    // TITLE (optional, remove if you want only buttons)
+    fill(255);
+    textSize(60);
+    text("Jungle Adventure", width / 2, height / 2 - 100);
 
-      // Instructions
-      textSize(20);
-      text("Use WASD to move, click to throw shurikens", width / 2, height / 2 - 40);
-
-      // Button hover
-      if (this.isHovering()) {
-        fill(255, 200, 0);
-      } else {
-        fill(255, 150, 0);
-      }
-
-      rectMode(CENTER);
-      rect(this.buttonX, this.buttonY, this.buttonW, this.buttonH, 12);
-
-      fill(0);
-      textSize(24);
-      text("START", this.buttonX, this.buttonY);
-
+    // BUTTON (hover effect)
+    if (this.isHovering(this.bx, this.by)) {
+      fill(255, 200, 0);
     } else {
-      // ===== ACTUAL GAME =====
-      background(30, 120, 60);
-
-      // example player
-      fill(50, 50, 255);
-      ellipse(width / 2, height / 2, 40);
-
-      // (you’ll add monsters + movement here)
+      fill(255, 150, 0);
     }
-  }
 
-  isHovering() {
-    return (
-      mouseX > this.buttonX - this.buttonW / 2 &&
-      mouseX < this.buttonX + this.buttonW / 2 &&
-      mouseY > this.buttonY - this.buttonH / 2 &&
-      mouseY < this.buttonY + this.buttonH / 2
-    );
+    rectMode(CENTER);
+    rect(this.bx, this.by, this.buttonW, this.buttonH, 12);
+
+    // button text
+    fill(0);
+    textSize(24);
+    text("START", this.bx, this.by);
   }
 
   handleMousePressed() {
-    if (!this.started && this.isHovering()) {
-      this.started = true; // switch to gameplay
+    if (this.isHovering(this.bx, this.by)) {
+      console.log("Start button clicked!");
+      // later you can switch screens here
     }
   }
+
+  isHovering(x, y) {
+    return (
+      mouseX > x - this.buttonW / 2 &&
+      mouseX < x + this.buttonW / 2 &&
+      mouseY > y - this.buttonH / 2 &&
+      mouseY < y + this.buttonH / 2
+    );
+  }
+}
+
+function setup() {
+  createCanvas(800, 600);
+  game = new GameScreen();
+}
+
+function draw() {
+  game.update();
+  game.display();
+}
+
+function mousePressed() {
+  game.handleMousePressed();
+}
+let game;
+let bgImg; // your background image
+function preload() {
+  // put your image file name here
+  bgImg = loadImage("+6s396.png");
 }
