@@ -63,7 +63,7 @@ class GameScreen {
 }
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   game = new GameScreen();
 }
 
