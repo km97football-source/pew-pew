@@ -79,5 +79,5 @@ let game;
 let bgImg;
 
 function preload() {
-  bgImg = loadImage("+6s396.png"); // your background image
+  bgImg = loadImage("JMDuHV.png"); // your background image
 }
