@@ -79,5 +79,5 @@ let game;
 let bgImg;
 
 function preload() {
-  bgImg = loadImage("JMDuHV.png"); // your background image
+  bgImg = loadImage("Welcome To Jungle Adventure.png"); // your background image
 }
