@@ -1,6 +1,8 @@
 let game;
-let bgImg;     // menu image
-let gameImg;   // game image
+let shop;
+
+let bgImg;
+let gameImg;
 
 class GameScreen {
   constructor() {
@@ -11,17 +13,18 @@ class GameScreen {
 
     this.bx = width / 2;
     this.by = height / 2 + 60;
+
+    this.shopY = height / 2 + 150;
   }
 
   update() {
-    // keep button centered on any screen size
     this.bx = width / 2;
     this.by = height / 2 + 60;
+    this.shopY = height / 2 + 150;
   }
 
   display() {
     if (this.state === "menu") {
-      // MENU SCREEN IMAGE
       image(bgImg, 0, 0, width, height);
 
       textAlign(CENTER, CENTER);
@@ -30,21 +33,24 @@ class GameScreen {
       textSize(60);
       text("Jungle Adventure", width / 2, height / 2 - 100);
 
-      if (this.isHovering(this.bx, this.by)) {
-        fill(255, 200, 0);
-      } else {
-        fill(255, 150, 0);
-      }
-
       rectMode(CENTER);
+
+      // START BUTTON
+      fill(this.isHovering(this.bx, this.by) ? color(255,200,0) : color(255,150,0));
       rect(this.bx, this.by, this.buttonW, this.buttonH, 12);
 
       fill(0);
       textSize(24);
       text("START", this.bx, this.by);
 
+      // SHOP BUTTON
+      fill(this.isHovering(this.bx, this.shopY) ? color(0,200,255) : color(0,150,255));
+      rect(this.bx, this.shopY, this.buttonW, this.buttonH, 12);
+
+      fill(0);
+      text("SHOP", this.bx, this.shopY);
+
     } else if (this.state === "game") {
-      // SECOND SCREEN IMAGE
       image(gameImg, 0, 0, width, height);
     }
   }
@@ -52,6 +58,120 @@ class GameScreen {
   handleMousePressed() {
     if (this.state === "menu" && this.isHovering(this.bx, this.by)) {
       this.state = "game";
+    }
+
+    if (this.state === "menu" && this.isHovering(this.bx, this.shopY)) {
+      shop.active = true;
+    }
+  }
+
+  isHovering(x, y) {
+    return (
+      mouseX > x - this.buttonW / 2 &&
+      mouseX < x + this.buttonW / 2 &&
+      mouseY > y - this.buttonH / 2 &&
+      mouseY < y + this.buttonH / 2
+    );
+  }
+}
+
+class Shop {
+  constructor() {
+    this.active = false;
+
+    this.coins = 20; // starting coins for testing
+
+    this.buttonW = 260;
+    this.buttonH = 60;
+
+    this.pierceY = height / 2 - 40;
+    this.doubleY = height / 2 + 40;
+    this.closeY = height / 2 + 140;
+
+    this.piercingUnlocked = false;
+    this.doubleUnlocked = false;
+  }
+
+  update() {
+    this.pierceY = height / 2 - 40;
+    this.doubleY = height / 2 + 40;
+    this.closeY = height / 2 + 140;
+  }
+
+  display() {
+    if (!this.active) return;
+
+    // dark overlay
+    fill(0, 180);
+    rect(0, 0, width, height);
+
+    textAlign(CENTER, CENTER);
+
+    fill(255);
+    textSize(40);
+    text("SHOP", width / 2, height / 2 - 150);
+
+    textSize(20);
+    text("Coins: " + this.coins, width / 2, height / 2 - 100);
+
+    rectMode(CENTER);
+
+    // PIERCE
+    fill(this.isHovering(width/2, this.pierceY) ? color(0,255,100) : color(0,200,100));
+    rect(width / 2, this.pierceY, this.buttonW, this.buttonH, 10);
+
+    fill(0);
+    text(
+      this.piercingUnlocked ? "Piercing (Owned)" : "Piercing (10 Coins)",
+      width / 2,
+      this.pierceY
+    );
+
+    // DOUBLE
+    fill(this.isHovering(width/2, this.doubleY) ? color(0,200,255) : color(0,150,255));
+    rect(width / 2, this.doubleY, this.buttonW, this.buttonH, 10);
+
+    fill(0);
+    text(
+      this.doubleUnlocked ? "Double (Owned)" : "Double (15 Coins)",
+      width / 2,
+      this.doubleY
+    );
+
+    // CLOSE
+    fill(255, 80, 80);
+    rect(width / 2, this.closeY, this.buttonW, this.buttonH, 10);
+
+    fill(0);
+    text("CLOSE", width / 2, this.closeY);
+  }
+
+  handleMousePressed() {
+    if (!this.active) return;
+
+    // BUY PIERCE
+    if (
+      this.isHovering(width / 2, this.pierceY) &&
+      !this.piercingUnlocked &&
+      this.coins >= 10
+    ) {
+      this.coins -= 10;
+      this.piercingUnlocked = true;
+    }
+
+    // BUY DOUBLE
+    if (
+      this.isHovering(width / 2, this.doubleY) &&
+      !this.doubleUnlocked &&
+      this.coins >= 15
+    ) {
+      this.coins -= 15;
+      this.doubleUnlocked = true;
+    }
+
+    // CLOSE SHOP
+    if (this.isHovering(width / 2, this.closeY)) {
+      this.active = false;
     }
   }
 
@@ -66,26 +186,29 @@ class GameScreen {
 }
 
 function preload() {
-  // 👇 PUT YOUR TWO IMAGE FILE NAMES HERE
   bgImg = loadImage("Welcome to Jungle Adventure.png");
   gameImg = loadImage("JMDuHV.png");
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight); // FULL SCREEN
+  createCanvas(windowWidth, windowHeight);
   game = new GameScreen();
+  shop = new Shop();
 }
 
 function draw() {
   game.update();
   game.display();
-}
 
-// makes canvas resize with browser
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  shop.update();
+  shop.display();
 }
 
 function mousePressed() {
   game.handleMousePressed();
+  shop.handleMousePressed();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
