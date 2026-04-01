@@ -1,8 +1,10 @@
-
+let game;
+let bgImg;     // menu image
+let gameImg;   // game image
 
 class GameScreen {
   constructor() {
-    this.state = "menu"; // "menu" or "game"
+    this.state = "menu";
 
     this.buttonW = 220;
     this.buttonH = 70;
@@ -11,13 +13,11 @@ class GameScreen {
     this.by = height / 2 + 60;
   }
 
-  update() {
-    // nothing needed yet
-  }
+  update() {}
 
   display() {
     if (this.state === "menu") {
-      // MENU SCREEN
+      // MENU SCREEN IMAGE
       image(bgImg, 0, 0, width, height);
 
       textAlign(CENTER, CENTER);
@@ -26,7 +26,6 @@ class GameScreen {
       textSize(60);
       text("Jungle Adventure", width / 2, height / 2 - 100);
 
-      // hover effect
       if (this.isHovering(this.bx, this.by)) {
         fill(255, 200, 0);
       } else {
@@ -41,14 +40,14 @@ class GameScreen {
       text("START", this.bx, this.by);
 
     } else if (this.state === "game") {
-      // BLANK SCREEN AFTER CLICK
-      background(0);
+      // SECOND SCREEN IMAGE
+      image(gameImg, 0, 0, width, height);
     }
   }
 
   handleMousePressed() {
     if (this.state === "menu" && this.isHovering(this.bx, this.by)) {
-      this.state = "game"; // switch screen
+      this.state = "game";
     }
   }
 
@@ -62,8 +61,14 @@ class GameScreen {
   }
 }
 
+function preload() {
+  // 👇 PUT YOUR TWO IMAGE LOCATIONS HERE
+  bgImg = loadImage("Welcome to Jungle Adventure.png");
+  gameImg = loadImage("JMDuHV.png");
+}
+
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(800, 600);
   game = new GameScreen();
 }
 
@@ -74,10 +79,4 @@ function draw() {
 
 function mousePressed() {
   game.handleMousePressed();
-}
-let game;
-let bgImg;
-
-function preload() {
-  bgImg = loadImage("Welcome To Jungle Adventure.png"); // your background image
 }
