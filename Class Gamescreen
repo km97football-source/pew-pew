@@ -68,7 +68,7 @@ class GameScreen {
 function preload() {
   // 👇 PUT YOUR TWO IMAGE FILE NAMES HERE
   bgImg = loadImage("Welcome to Jungle Adventure.png");
-  gameImg = loadImage("JMDuHV.png");
+  gameImg = loadImage("GamePlayBackground.png");
 }
 
 function setup() {
