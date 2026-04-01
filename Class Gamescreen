@@ -13,7 +13,11 @@ class GameScreen {
     this.by = height / 2 + 60;
   }
 
-  update() {}
+  update() {
+    // keep button centered on any screen size
+    this.bx = width / 2;
+    this.by = height / 2 + 60;
+  }
 
   display() {
     if (this.state === "menu") {
@@ -62,19 +66,24 @@ class GameScreen {
 }
 
 function preload() {
-  // 👇 PUT YOUR TWO IMAGE LOCATIONS HERE
+  // 👇 PUT YOUR TWO IMAGE FILE NAMES HERE
   bgImg = loadImage("Welcome to Jungle Adventure.png");
   gameImg = loadImage("JMDuHV.png");
 }
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight); // FULL SCREEN
   game = new GameScreen();
 }
 
 function draw() {
   game.update();
   game.display();
+}
+
+// makes canvas resize with browser
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function mousePressed() {
