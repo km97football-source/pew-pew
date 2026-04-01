@@ -7,6 +7,7 @@ let shurikens = [];
 let lastShurikenTime = 0;
 let shurikenDelay = 250;
 
+
 function preload() {
     img = loadImage('assests/SingleSawBladeSuriken.png', 
         () => console.log('Shuriken image loaded'),
@@ -21,6 +22,7 @@ function preload() {
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 	game = new GameScreen();
+
 }
 
 function initGame() {
@@ -32,21 +34,24 @@ function initGame() {
 	monsters.push(new Monster(3 * width / 4, height / 4));
 	monsters.push(new Monster(width / 2, height / 4 + 100));
 
-	boss = new Boss(width / 2, height / 4 - 100);
+	boss = null;
+	waveNumber = 0;
 }
 
+
 function draw() {
+
 	if (game.state === "menu") {
 		game.update();
 		game.display();
+
 	} else if (game.state === "game") {
-		background('white');
+
 		ninja1.draw()
 		ninja1.update()
 		arrow.draw()
 		
-		// Update and draw boss
-		if (boss.alive) {
+		if (boss && boss.alive) {
 			boss.update(ninja1.x, ninja1.y);
 			boss.draw();
 		}
@@ -56,6 +61,11 @@ function draw() {
 			m.update(ninja1.x, ninja1.y);
 			m.draw();
 		}
+
+		// Check if all monsters are defeated and spawn new wave
+		if (allMonstersDefeated()) {
+			spawnNewWave();
+		}
     
 		// Update and draw all shurikens with collision detection
         for (let i = shurikens.length - 1; i >= 0; i--) {
@@ -64,7 +74,7 @@ function draw() {
             s.draw();
             
             // Check collision with boss
-            if (boss.alive && dist(s.x, s.y, boss.x, boss.y) < s.size / 2 + boss.size / 2) {
+            if (boss && boss.alive && dist(s.x, s.y, boss.x, boss.y) < s.size / 2 + boss.size / 2) {
                 boss.takeDamage(10);
                 shurikens.splice(i, 1);
                 print("Boss hit! Health:", boss.health);

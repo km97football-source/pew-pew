@@ -23,6 +23,8 @@ class Ninja {
 		if (keyIsDown(83) === true) { //S
 			this.y = this.y + this.speed;
 		}
+
+		displayWaveCounter();
 	}
 
 	draw() {

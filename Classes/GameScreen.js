@@ -43,7 +43,7 @@ class GameScreen {
       text("START", this.bx, this.by);
 
     } else if (this.state === "game") {
-      // BLANK SCREEN AFTER CLICK
+  
       background(0);
     }
   }

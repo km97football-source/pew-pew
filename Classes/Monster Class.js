@@ -65,3 +65,31 @@ class Monster {
     return d < this.size / 2 + shurikenSize / 2;
   }
 }
+
+function allMonstersDefeated() {
+	// Check if boss exists and is still alive
+	if (boss !== null && boss.alive) {
+		return false;
+	}
+	// Check if all regular monsters are dead
+	return monsters.length === 0 || monsters.every(m => !m.alive);
+}
+
+function spawnNewWave() {
+	waveNumber++;
+	let randomCount = random(2, 6); // spawn 2-5 monsters
+	randomCount = floor(randomCount);
+	
+	for (let i = 0; i < randomCount; i++) {
+		let randomX = random(width * 0.2, width * 0.8);
+		let randomY = random(height * 0.2, height * 0.6);
+		monsters.push(new Monster(randomX, randomY));
+	}
+	
+
+	if (waveNumber % 7=== 0) {
+		boss = new Boss(width / 2, height * 0.8);
+	}
+	
+	print("Wave " + waveNumber + " spawned! Monsters: " + randomCount);
+}
