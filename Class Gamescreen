@@ -1,34 +1,38 @@
 let game;
 let shop;
 
-let bgImg;
-let gameImg;
+let bgImg;     // menu image
+let gameImg;   // game image
 
+function preload() {
+  // 👇 Put your image filenames here exactly
+  bgImg = loadImage("Welcome to Jungle Adventure.png");
+  gameImg = loadImage("JMDuHV.png");
+}
+
+// ================= GAME SCREEN =================
 class GameScreen {
   constructor() {
-    this.state = "menu";
+    this.state = "menu"; // menu, game, shop
 
     this.buttonW = 220;
     this.buttonH = 70;
 
     this.bx = width / 2;
     this.by = height / 2 + 60;
-
-    this.shopY = height / 2 + 150;
   }
 
   update() {
     this.bx = width / 2;
     this.by = height / 2 + 60;
-    this.shopY = height / 2 + 150;
   }
 
   display() {
+    // ===== MENU =====
     if (this.state === "menu") {
       image(bgImg, 0, 0, width, height);
 
       textAlign(CENTER, CENTER);
-
       fill(255);
       textSize(60);
       text("Jungle Adventure", width / 2, height / 2 - 100);
@@ -38,30 +42,45 @@ class GameScreen {
       // START BUTTON
       fill(this.isHovering(this.bx, this.by) ? color(255,200,0) : color(255,150,0));
       rect(this.bx, this.by, this.buttonW, this.buttonH, 12);
-
       fill(0);
       textSize(24);
       text("START", this.bx, this.by);
 
       // SHOP BUTTON
-      fill(this.isHovering(this.bx, this.shopY) ? color(0,200,255) : color(0,150,255));
-      rect(this.bx, this.shopY, this.buttonW, this.buttonH, 12);
-
+      let shopY = this.by + 100;
+      fill(this.isHovering(this.bx, shopY) ? color(0,200,255) : color(0,150,255));
+      rect(this.bx, shopY, this.buttonW, this.buttonH, 12);
       fill(0);
-      text("SHOP", this.bx, this.shopY);
+      text("SHOP", this.bx, shopY);
+    }
 
-    } else if (this.state === "game") {
+    // ===== GAME =====
+    else if (this.state === "game") {
       image(gameImg, 0, 0, width, height);
+    }
+
+    // ===== SHOP SCREEN =====
+    else if (this.state === "shop") {
+      shop.display(); // full screen shop
     }
   }
 
   handleMousePressed() {
+    let shopY = this.by + 100;
+
+    // START
     if (this.state === "menu" && this.isHovering(this.bx, this.by)) {
       this.state = "game";
     }
 
-    if (this.state === "menu" && this.isHovering(this.bx, this.shopY)) {
-      shop.active = true;
+    // SHOP
+    if (this.state === "menu" && this.isHovering(this.bx, shopY)) {
+      this.state = "shop";
+    }
+
+    // PASS CLICK TO SHOP
+    if (this.state === "shop") {
+      shop.handleMousePressed();
     }
   }
 
@@ -75,18 +94,17 @@ class GameScreen {
   }
 }
 
+// ================= SHOP CLASS =================
 class Shop {
   constructor() {
-    this.active = false;
-
-    this.coins = 20; // starting coins for testing
+    this.coins = 20;
 
     this.buttonW = 260;
     this.buttonH = 60;
 
     this.pierceY = height / 2 - 40;
     this.doubleY = height / 2 + 40;
-    this.closeY = height / 2 + 140;
+    this.backY = height / 2 + 140;
 
     this.piercingUnlocked = false;
     this.doubleUnlocked = false;
@@ -95,61 +113,52 @@ class Shop {
   update() {
     this.pierceY = height / 2 - 40;
     this.doubleY = height / 2 + 40;
-    this.closeY = height / 2 + 140;
+    this.backY = height / 2 + 140;
   }
 
   display() {
-    if (!this.active) return;
-
-    // dark overlay
-    fill(0, 180);
-    rect(0, 0, width, height);
+    background(20); // FULL SCREEN SHOP
 
     textAlign(CENTER, CENTER);
 
     fill(255);
-    textSize(40);
-    text("SHOP", width / 2, height / 2 - 150);
+    textSize(50);
+    text("SHOP", width / 2, height / 2 - 200);
 
-    textSize(20);
-    text("Coins: " + this.coins, width / 2, height / 2 - 100);
+    textSize(22);
+    text("Coins: " + this.coins, width / 2, height / 2 - 150);
 
     rectMode(CENTER);
 
-    // PIERCE
+    // ===== PIERCING =====
+    fill(255);
+    text("Piercing Shuriken\nGoes through enemies + more damage", width/2, this.pierceY - 40);
+
     fill(this.isHovering(width/2, this.pierceY) ? color(0,255,100) : color(0,200,100));
     rect(width / 2, this.pierceY, this.buttonW, this.buttonH, 10);
 
     fill(0);
-    text(
-      this.piercingUnlocked ? "Piercing (Owned)" : "Piercing (10 Coins)",
-      width / 2,
-      this.pierceY
-    );
+    text(this.piercingUnlocked ? "OWNED" : "BUY (10)", width / 2, this.pierceY);
 
-    // DOUBLE
+    // ===== DOUBLE =====
+    fill(255);
+    text("Double Shuriken\nThrows two at once", width/2, this.doubleY - 40);
+
     fill(this.isHovering(width/2, this.doubleY) ? color(0,200,255) : color(0,150,255));
     rect(width / 2, this.doubleY, this.buttonW, this.buttonH, 10);
 
     fill(0);
-    text(
-      this.doubleUnlocked ? "Double (Owned)" : "Double (15 Coins)",
-      width / 2,
-      this.doubleY
-    );
+    text(this.doubleUnlocked ? "OWNED" : "BUY (15)", width / 2, this.doubleY);
 
-    // CLOSE
+    // ===== BACK BUTTON =====
     fill(255, 80, 80);
-    rect(width / 2, this.closeY, this.buttonW, this.buttonH, 10);
-
+    rect(width / 2, this.backY, this.buttonW, this.buttonH, 10);
     fill(0);
-    text("CLOSE", width / 2, this.closeY);
+    text("BACK", width / 2, this.backY);
   }
 
   handleMousePressed() {
-    if (!this.active) return;
-
-    // BUY PIERCE
+    // BUY PIERCING
     if (
       this.isHovering(width / 2, this.pierceY) &&
       !this.piercingUnlocked &&
@@ -169,9 +178,9 @@ class Shop {
       this.doubleUnlocked = true;
     }
 
-    // CLOSE SHOP
-    if (this.isHovering(width / 2, this.closeY)) {
-      this.active = false;
+    // BACK TO MENU
+    if (this.isHovering(width / 2, this.backY)) {
+      game.state = "menu";
     }
   }
 
@@ -185,30 +194,27 @@ class Shop {
   }
 }
 
-function preload() {
-  bgImg = loadImage("Welcome to Jungle Adventure.png");
-  gameImg = loadImage("GamePlayBackground.png");
-}
-
+// ================= SETUP =================
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
   game = new GameScreen();
   shop = new Shop();
 }
 
+// ================= DRAW =================
 function draw() {
   game.update();
+  if (game.state === "shop") shop.update();
   game.display();
-
-  shop.update();
-  shop.display();
 }
 
+// ================= CLICK =================
 function mousePressed() {
   game.handleMousePressed();
-  shop.handleMousePressed();
 }
 
+// resize
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
