@@ -1,6 +1,9 @@
 let game;
 let shop;
-
+let instImg;
+let instImg2;
+let gameOverImg;
+let gamePauseImg;
 let bgImg;     // MENU IMAGE
 let gameImg;   // GAME IMAGE
 
@@ -11,6 +14,7 @@ function preload() {
   instImg2 = loadImage("Instructions2.png")
   gameImg = loadImage("GamePlayBackground.png");
   gameOverImg = loadImage("GameOver.png");
+  gamePauseImg = loadImage("GamePaused.png");
 }
 
 class GameScreen {
