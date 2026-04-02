@@ -1,5 +1,4 @@
 
-
 class GameScreen {
   constructor() {
     this.state = "menu"; // "menu" or "game"
@@ -44,7 +43,9 @@ class GameScreen {
 
     } else if (this.state === "game") {
   
-      background(0);
+      if (gameImg) {
+        image(gameImg, 0, 0, width, height);
+      }
     }
   }
 

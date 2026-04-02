@@ -1,5 +1,6 @@
 let game;
-let bgImg, img;
+let bgImg, gameImg, shurikenimg;
+
 let ninja1, arrow;
 let monsters = [];
 let boss;
@@ -7,17 +8,23 @@ let shurikens = [];
 let lastShurikenTime = 0;
 let shurikenDelay = 250;
 
-
 function preload() {
-    img = loadImage('assests/SingleSawBladeSuriken.png', 
-        () => console.log('Shuriken image loaded'),
-        () => console.error('Failed to load shuriken image')
-    );
-    bgImg = loadImage('assests/Welcome To Jungle Adventure.png',
-        () => console.log('Background image loaded'),
-        () => console.error('Failed to load background image')
-    );
+  bgImg = loadImage('assests/Welcome To Jungle Adventure.png',
+    () => console.log('Background image loaded'),
+    () => console.error('Failed to load background image')
+  );
+  gameImg = loadImage('assests/GamePlayBackground.png',
+    () => console.log('Game screen image loaded'),
+    () => console.error('Failed to load game screen image')
+  );
+  shurikenimg = loadImage('assests/SawBladeSuriken.png',
+    () => console.log('Shuriken image loaded'),
+    () => console.error('Failed to load shuriken image')
+  );
 }
+
+
+
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
@@ -46,7 +53,8 @@ function draw() {
 		game.display();
 
 	} else if (game.state === "game") {
-
+		game.update();
+		game.display();
 		ninja1.draw()
 		ninja1.update()
 		arrow.draw()

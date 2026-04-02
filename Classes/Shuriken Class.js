@@ -1,11 +1,9 @@
-let shurikenimg;
-
 class Shuriken {
     constructor(x, y, speed, targetX, targetY) {
-        this.x = x;
+        this.x = x ;
         this.y = y;
         this.speed = speed;
-        this.size = 15;
+        this.size = 50;
         this.active = true;
         
         let dx = targetX - x;
@@ -21,10 +19,11 @@ class Shuriken {
         }
 
         this.sprite = new Sprite(shurikenimg, this.size, [
-			new SubImage(0, 10, 128, 118),
-			new SubImage(0, 10, 128, 118),
-			new SubImage(0, 10, 128, 118),
+			new SubImage(0, 32, 31, 32),
+			new SubImage(30, 32, 31, 32),
 		])
+        this.frameCounter = 0;
+        this.frameRate = 7;
     }
     
     update() {
@@ -36,9 +35,9 @@ class Shuriken {
     draw() {
         if (!this.active) return;
 
-        if (img) {
-            noStroke();
-            image(img, this.x - this.size / 2, this.y - this.size / 2, this.size * 5, this.size * 5);
-        }
+        let frameIndex = Math.floor(this.frameCounter / this.frameRate) % this.sprite.subImages.length;
+        this.frameCounter++;
+        
+        this.sprite.draw({x: this.x, y: this.y}, frameIndex);
     }
 }
