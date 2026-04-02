@@ -28,7 +28,6 @@ class Ninja {
 	}
 
 	draw() {
-		clear()
 		fill(this.colour);
 		circle(this.x, this.y, this.size * 2)
 	}

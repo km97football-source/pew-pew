@@ -9,6 +9,16 @@ class Boss extends Monster {
     this.speed = random(1, 2); // faster and more dangerous
   }
 
+  // Override takeDamage to give 3 gold instead of 1
+  takeDamage(amount) {
+    this.health -= amount;
+
+    if (this.health <= 0) {
+      this.alive = false;
+      addGold(3); // 3 gold per boss defeated
+    }
+  }
+
   // Override draw to make boss look different
   draw() {
     if (!this.alive) return;

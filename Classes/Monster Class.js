@@ -50,6 +50,7 @@ class Monster {
 
     if (this.health <= 0) {
       this.alive = false;
+      addGold(1); // 1 gold per monster defeated
     }
   }
 
