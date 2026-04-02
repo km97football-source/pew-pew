@@ -10,62 +10,91 @@ class Shop {
   }
 
   display() {
-    background(30);
+    background(30, 60, 30); // jungle dark green
 
     textAlign(CENTER, CENTER);
     rectMode(CENTER);
 
-    // TITLE
-    fill(255);
-    textSize(60);
+    // ===== TITLE (JUNGLE STYLE) =====
+    fill(0, 100, 0);
+    textSize(64);
+    text("SHOP", width / 2 + 4, 84);
+
+    fill(120, 255, 120);
     text("SHOP", width / 2, 80);
 
-    // COINS
-    textSize(24);
+    // ===== COINS =====
+    fill(200, 255, 200);
+    textSize(22);
     text("Coins: " + this.coins, width / 2, 130);
 
     let centerX = width / 2;
     let startY = 200;
-    let gap = 150;
+    let gap = 160;
 
-    // ===== PIERCING =====
+    // ==============================
+    // 🌿 PIERCING PERK
+    // ==============================
     let y1 = startY;
 
-    fill(255);
-    textSize(22);
+    // wood panel
+    fill(80, 50, 20);
+    rect(centerX, y1 + 40, 360, 130, 15);
+
+    // title shadow
+    fill(0, 80, 0);
+    textSize(26);
+    text("Piercing Shuriken", centerX + 2, y1 + 2);
+
+    // title main
+    fill(180, 255, 180);
     text("Piercing Shuriken", centerX, y1);
 
+    // description
+    fill(200, 255, 200);
     textSize(16);
-    text("Goes through enemies + extra damage", centerX, y1 + 25);
+    text("Goes through enemies + extra damage", centerX, y1 + 30);
 
-    fill(this.isHovering(centerX, y1 + 70) ? color(0,255,120) : color(0,200,100));
-    rect(centerX, y1 + 70, this.buttonW, this.buttonH, 12);
+    // button
+    fill(this.isHovering(centerX, y1 + 80) ? color(50,200,50) : color(30,150,30));
+    rect(centerX, y1 + 80, this.buttonW, this.buttonH, 12);
 
     fill(0);
     textSize(18);
-    text(this.piercingUnlocked ? "OWNED" : "BUY (10)", centerX, y1 + 70);
+    text(this.piercingUnlocked ? "OWNED" : "BUY (10)", centerX, y1 + 80);
 
-    // ===== DOUBLE =====
+    // ==============================
+    // 🌿 DOUBLE PERK
+    // ==============================
     let y2 = startY + gap;
 
-    fill(255);
-    textSize(22);
+    fill(80, 50, 20);
+    rect(centerX, y2 + 40, 360, 130, 15);
+
+    fill(0, 80, 0);
+    textSize(26);
+    text("Double Shuriken", centerX + 2, y2 + 2);
+
+    fill(180, 255, 180);
     text("Double Shuriken", centerX, y2);
 
+    fill(200, 255, 200);
     textSize(16);
-    text("Throws two at once", centerX, y2 + 25);
+    text("Throws two at once", centerX, y2 + 30);
 
-    fill(this.isHovering(centerX, y2 + 70) ? color(0,200,255) : color(0,150,255));
-    rect(centerX, y2 + 70, this.buttonW, this.buttonH, 12);
+    fill(this.isHovering(centerX, y2 + 80) ? color(50,180,220) : color(30,130,200));
+    rect(centerX, y2 + 80, this.buttonW, this.buttonH, 12);
 
     fill(0);
     textSize(18);
-    text(this.doubleUnlocked ? "OWNED" : "BUY (15)", centerX, y2 + 70);
+    text(this.doubleUnlocked ? "OWNED" : "BUY (15)", centerX, y2 + 80);
 
-    // ===== BACK =====
+    // ==============================
+    // 🔙 BACK BUTTON
+    // ==============================
     let y3 = startY + gap * 2;
 
-    fill(this.isHovering(centerX, y3) ? color(255,120,120) : color(255,80,80));
+    fill(this.isHovering(centerX, y3) ? color(255,120,120) : color(200,80,80));
     rect(centerX, y3, this.buttonW, this.buttonH, 12);
 
     fill(0);
@@ -73,8 +102,8 @@ class Shop {
     text("BACK", centerX, y3);
 
     // CLICK ZONES
-    this.pierceY = y1 + 70;
-    this.doubleY = y2 + 70;
+    this.pierceY = y1 + 80;
+    this.doubleY = y2 + 80;
     this.backY = y3;
   }
 
