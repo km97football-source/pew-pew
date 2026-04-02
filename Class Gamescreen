@@ -4,9 +4,13 @@ let shop;
 let bgImg;     // MENU IMAGE
 let gameImg;   // GAME IMAGE
 
+
 function preload() {
   bgImg = loadImage("Welcome to Jungle Adventure.png");
-  gameImg = loadImage("JMDuHV.png");
+  instImg = loadImage("Instructions1.png");
+  instImg2 = loadImage("Instructions2.png")
+  gameImg = loadImage("GamePlayBackground.png");
+  gameOverImg = loadImage("GameOver.png");
 }
 
 class GameScreen {
