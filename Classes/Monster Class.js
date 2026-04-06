@@ -11,8 +11,11 @@ class Monster {
   }
 
   // Move toward player
-  update(playerX, playerY) {
+  update(playerX, playerY, collisions) {
     if (!this.alive) return;
+
+    let previousX = this.x;
+    let previousY = this.y;
 
     let dx = playerX - this.x;
     let dy = playerY - this.y;
@@ -22,6 +25,12 @@ class Monster {
     if (distance > 0) {
       this.x += (dx / distance) * this.speed;
       this.y += (dy / distance) * this.speed;
+    }
+
+    if (collisions) {
+      let resolved = collisions.resolveCircleCollision(this.x, this.y, this.size / 2, previousX, previousY);
+      this.x = resolved.x;
+      this.y = resolved.y;
     }
   }
 
