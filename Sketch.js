@@ -35,10 +35,24 @@ function setup() {
 	game = new GameScreen();
 
 	collisionManager = new CollisionManager();
-	collisionManager.addRect(100, 150, 300, 20, '#888');
-	collisionManager.addRect(width - 300, height - 220, 220, 20, '#888');
-	collisionManager.addCircle(width / 2, height / 2 + 150, 50, '#888');
 
+	collisionManager.addCircle(120, height - 30, 200, '#88888800');
+	collisionManager.addCircle(0, height / 2 + 175, 100, '#88888800');
+
+	collisionManager.addCircle(width + 50, height, 275, '#88888800');
+	collisionManager.addCircle(width - 175, height - 60, 130, '#88888800');
+
+	collisionManager.addCircle(width - 120, 0, 210, '#88888800');
+	collisionManager.addCircle(width - 400, -50, 170, '#88888800');
+
+	collisionManager.addCircle(50, 100, 100, '#88888800');
+	collisionManager.addCircle(290, -120, 210, '#88888800');
+
+	let borderThickness = 20;
+	collisionManager.addRect(-borderThickness, -borderThickness, width + borderThickness * 2, borderThickness, '#44444400'); // Top
+	collisionManager.addRect(-borderThickness, height, width + borderThickness * 2, borderThickness, '#44444400'); // Bottom
+	collisionManager.addRect(-borderThickness, -borderThickness, borderThickness, height + borderThickness * 2, '#44444400'); // Left
+	collisionManager.addRect(width, -borderThickness, borderThickness, height + borderThickness * 2, '#44444400'); // Right
 }
 
 function initGame() {
@@ -93,8 +107,14 @@ function draw() {
 		// Update and draw all shurikens with collision detection
         for (let i = shurikens.length - 1; i >= 0; i--) {
             let s = shurikens[i];
-            s.update();
+            s.update(collisionManager);
             s.draw();
+            
+            // Remove shuriken if it hit an obstacle or went off-screen
+            if (!s.active) {
+                shurikens.splice(i, 1);
+                continue;
+            }
             
             // Check collision with boss
             if (boss && boss.alive && dist(s.x, s.y, boss.x, boss.y) < s.size / 2 + boss.size / 2) {

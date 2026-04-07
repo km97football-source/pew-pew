@@ -26,10 +26,31 @@ class Shuriken {
         this.frameRate = 7;
     }
     
-    update() {
+    update(collisionManager) {
+        let prevX = this.x;
+        let prevY = this.y;
         
         this.x += this.vx;
         this.y += this.vy;
+
+        // Resolve collision with obstacles
+        if (collisionManager) {
+            let resolved = collisionManager.resolveCircleCollision(this.x, this.y, this.size / 2, prevX, prevY);
+            
+            // If position changed from attempted position, shuriken hit obstacle
+            if (resolved.x !== this.x || resolved.y !== this.y) {
+                this.active = false;
+                return;
+            }
+            
+            this.x = resolved.x;
+            this.y = resolved.y;
+        }
+
+        // Remove shuriken if it goes off screen
+        if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+            this.active = false;
+        }
     }
     
     draw() {
