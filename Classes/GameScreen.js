@@ -46,6 +46,11 @@ class GameScreen {
       if (gameImg) {
         image(gameImg, 0, 0, width, height);
       }
+    } else if (this.state === "pause") {
+
+      if (pimage) {
+        image(pimage, 0, 0, width, height);
+      }
     }
   }
 

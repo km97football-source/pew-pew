@@ -15,7 +15,7 @@ class Boss extends Monster {
 
     if (this.health <= 0) {
       this.alive = false;
-      addGold(3); // 3 gold per boss defeated
+      addGold(5); // 5 gold per boss defeated
     }
   }
 

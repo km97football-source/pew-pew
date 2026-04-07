@@ -7,7 +7,10 @@ class Ninja {
 		this.speed = speed;
 	}
 
-	update() {
+	update(collisionManager) {
+		let prevX = this.x;
+		let prevY = this.y;
+
 		if (keyIsDown(65) === true) { //A
 			this.x = this.x - this.speed;
 		}
@@ -22,6 +25,13 @@ class Ninja {
 
 		if (keyIsDown(83) === true) { //S
 			this.y = this.y + this.speed;
+		}
+
+		// Resolve collision
+		if (collisionManager) {
+			let resolved = collisionManager.resolveCircleCollision(this.x, this.y, this.size, prevX, prevY);
+			this.x = resolved.x;
+			this.y = resolved.y;
 		}
 
 		displayWaveCounter();

@@ -1,5 +1,5 @@
 let game;
-let bgImg, gameImg, shurikenimg;
+let bgImg, gameImg, shurikenimg, pimage;
 
 let ninja1, arrow;
 let monsters = [];
@@ -7,6 +7,8 @@ let boss;
 let shurikens = [];
 let lastShurikenTime = 0;
 let shurikenDelay = 250;
+
+let collisionManager;
 
 function preload() {
   bgImg = loadImage('assests/Welcome To Jungle Adventure.png',
@@ -21,6 +23,8 @@ function preload() {
     () => console.log('Shuriken image loaded'),
     () => console.error('Failed to load shuriken image')
   );
+  pimage = loadImage('assests/GamePaused.png',
+  );
 }
 
 
@@ -29,6 +33,11 @@ function preload() {
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 	game = new GameScreen();
+
+	collisionManager = new CollisionManager();
+	collisionManager.addRect(100, 150, 300, 20, '#888');
+	collisionManager.addRect(width - 300, height - 220, 220, 20, '#888');
+	collisionManager.addCircle(width / 2, height / 2 + 150, 50, '#888');
 
 }
 
@@ -52,21 +61,27 @@ function draw() {
 		game.update();
 		game.display();
 
-	} else if (game.state === "game") {
+	} else if (game.state === "pause") {
 		game.update();
 		game.display();
+	}
+	
+	else if (game.state === "game") {
+		game.update();
+		game.display();
+		collisionManager.draw();
 		ninja1.draw()
-		ninja1.update()
+		ninja1.update(collisionManager)
 		arrow.draw()
 		
 		if (boss && boss.alive) {
-			boss.update(ninja1.x, ninja1.y);
+			boss.update(ninja1.x, ninja1.y, collisionManager);
 			boss.draw();
 		}
 
-		// Update and draw all monsters
+		
 		for (let m of monsters) {
-			m.update(ninja1.x, ninja1.y);
+			m.update(ninja1.x, ninja1.y, collisionManager);
 			m.draw();
 		}
 
@@ -119,3 +134,15 @@ function mousePressed() {
         }
 	}
 }
+
+function keyPressed() {
+	if (keyCode === 27) { // ESC key
+		if (game.state === "game") {
+			game.state = "pause";
+		} else if (game.state === "pause") {
+			game.state = "game";
+		}
+		return false; // Prevent default ESC behavior
+	}
+}
+
