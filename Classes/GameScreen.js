@@ -1,13 +1,18 @@
 
 class GameScreen {
   constructor() {
-    this.state = "menu"; // "menu" or "game"
-
+    this.state = "menu"; 
     this.buttonW = 220;
     this.buttonH = 70;
 
-    this.bx = width / 2;
-    this.by = height / 2 + 60;
+    this.playAgainX = width / 2;
+    this.playAgainY = height / 2 + 110;
+    this.mainMenuX = width / 2;
+    this.mainMenuY = height / 2 + 10;
+    this.instrX = width / 2;
+    this.instrY = height / 2 + 210;
+    this.backX = width / 2;
+    this.backY = height / 2 + 60;
   }
 
   update() {
@@ -15,48 +20,133 @@ class GameScreen {
   }
 
   display() {
+    textAlign(CENTER, CENTER);
+    rectMode(CENTER);
+
     if (this.state === "menu") {
       // MENU SCREEN
       if (bgImg) {
         image(bgImg, 0, 0, width, height);
       }
 
-      textAlign(CENTER, CENTER);
-
       fill(255);
       textSize(60);
       text("Jungle Adventure", width / 2, height / 2 - 100);
 
-      // hover effect
-      if (this.isHovering(this.bx, this.by)) {
+      push();
+      // hover effect for START
+      if (this.isHovering(this.backX, this.backY)) {
         fill(255, 200, 0);
       } else {
-        fill(255, 150, 0);
+        fill('#eecf9b');
       }
-
-      rectMode(CENTER);
-      rect(this.bx, this.by, this.buttonW, this.buttonH, 12);
+      stroke(0);
+      strokeWeight(3);
+      rect(this.backX, this.backY, this.buttonW, this.buttonH, 12);
+      noStroke();
+      pop();
 
       fill(0);
       textSize(24);
-      text("START", this.bx, this.by);
+      text("START", this.backX, this.backY);
 
     } else if (this.state === "game") {
-  
       if (gameImg) {
         image(gameImg, 0, 0, width, height);
       }
     } else if (this.state === "pause") {
-
       if (pimage) {
         image(pimage, 0, 0, width, height);
       }
+
+      push();
+      // Main Menu button
+      if (this.isHovering(this.mainMenuX, this.mainMenuY)) {
+        fill(255, 200, 0);
+      } else {
+        fill('#eecf9b');
+      }
+      stroke(0);
+      strokeWeight(3);
+      rect(this.mainMenuX, this.mainMenuY, this.buttonW, this.buttonH, 12);
+      noStroke();
+      pop();
+      fill(0);
+      textSize(24);
+      text("MAIN MENU", this.mainMenuX, this.mainMenuY);
+
+      push();
+      // Play Again button
+      if (this.isHovering(this.playAgainX, this.playAgainY)) {
+        fill(255, 200, 0);
+      } else {
+        fill('#eecf9b');
+      }
+      stroke(0);
+      strokeWeight(3);
+      rect(this.playAgainX, this.playAgainY, this.buttonW, this.buttonH, 12);
+      noStroke();
+      pop();
+      fill(0);
+      textSize(24);
+      text("PLAY AGAIN", this.playAgainX, this.playAgainY);
+
+      push();
+      // Instructions button
+      if (this.isHovering(this.instrX, this.instrY)) {
+        fill(255, 200, 0);
+      } else {
+        fill('#eecf9b');
+      }
+      stroke(0);
+      strokeWeight(3);
+      rect(this.instrX, this.instrY, this.buttonW, this.buttonH, 12);
+      noStroke();
+      pop();
+      fill(0);
+      textSize(24);
+      text("INSTRUCTIONS", this.instrX, this.instrY);
+
+    } else if (this.state === "instructions") {
+      background(0);
+      fill(255);
+      textSize(48);
+      text("INSTRUCTIONS", width/2, height/2 - 100);
+
+      textSize(24);
+      text("Instructions screen (placeholder).\nPress back to return.", width/2, height/2);
+
+      push();
+      // Back button
+      if (this.isHovering(this.backX, this.backY)) {
+        fill(255, 200, 0);
+      } else {
+        fill('#eecf9b');
+      }
+      stroke(0);
+      strokeWeight(3);
+      rect(this.backX, this.backY, this.buttonW, this.buttonH, 12);
+      noStroke();
+      pop();
+      fill(0);
+      textSize(24);
+      text("BACK", this.backX, this.backY);
     }
   }
 
   handleMousePressed() {
-    if (this.state === "menu" && this.isHovering(this.bx, this.by)) {
-      this.state = "game"; // switch screen
+    if (this.state === "menu" && this.isHovering(this.backX, this.backY)) {
+      this.state = "game";
+    } else if (this.state === "pause") {
+      if (this.isHovering(this.mainMenuX, this.mainMenuY)) {
+        this.state = "menu";
+      } else if (this.isHovering(this.playAgainX, this.playAgainY)) {
+        this.state = "game";
+      } else if (this.isHovering(this.instrX, this.instrY)) {
+        this.state = "instructions";
+      }
+    } else if (this.state === "instructions" && this.isHovering(this.backX, this.backY)) {
+      this.state = "menu";
     }
   }
 

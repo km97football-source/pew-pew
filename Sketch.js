@@ -71,16 +71,11 @@ function initGame() {
 
 function draw() {
 
-	if (game.state === "menu") {
+	if (game.state === "menu" || game.state === "pause" || game.state === "instructions") {
 		game.update();
 		game.display();
 
-	} else if (game.state === "pause") {
-		game.update();
-		game.display();
-	}
-	
-	else if (game.state === "game") {
+	} else if (game.state === "game") {
 		game.update();
 		game.display();
 		collisionManager.draw();
@@ -139,12 +134,12 @@ function draw() {
 }
 
 function mousePressed() {
-	if (game.state === "menu") {
+	if (game.state !== "game") {
 		game.handleMousePressed();
 		if (game.state === "game") {
 			initGame();
 		}
-	} else if (game.state === "game") {
+	} else {
         let currentTime = millis();
         if (currentTime - lastShurikenTime > shurikenDelay) {
             let newShuriken = new Shuriken(ninja1.x, ninja1.y, 5, mouseX, mouseY);
@@ -161,6 +156,8 @@ function keyPressed() {
 			game.state = "pause";
 		} else if (game.state === "pause") {
 			game.state = "game";
+		} else if (game.state === "instructions") {
+			game.state = "menu";
 		}
 		return false; // Prevent default ESC behavior
 	}
