@@ -11,7 +11,7 @@ let gameImg;   // GAME IMAGE
 function preload() {
   bgImg = loadImage("images/Welcome to Jungle Adventure.png");
   instImg = loadImage("images/Instructions1.png");
-  instImg2 = loadImage("images/Intructions2.png")
+  instImg2 = loadImage("images/Instructions2.png")
   gameImg = loadImage("images/GamePlayBackground.png");
   gameOverImg = loadImage("images/GameOver.png");
   gamePauseImg = loadImage("images/GamePause.png");
