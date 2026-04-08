@@ -14,7 +14,7 @@ function preload() {
   instImg2 = loadImage("images/Intructions2.png")
   gameImg = loadImage("images/GamePlayBackground.png");
   gameOverImg = loadImage("images/GameOver.png");
-  gamePauseImg = loadImage("images/GamePaused.png");
+  gamePauseImg = loadImage("images/GamePause.png");
 }
 
 class GameScreen {
