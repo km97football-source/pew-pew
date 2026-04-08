@@ -8,6 +8,10 @@ class Monster {
     this.maxHealth = 50;
     this.health = this.maxHealth;
     this.alive = true;
+    
+    // Randomly pick a monster emoji
+    const emojis = ['👻', '🧟', '🧛'];
+    this.emoji = random(emojis);
   }
 
   // Move toward player
@@ -40,8 +44,10 @@ class Monster {
     if (!this.alive) return;
 
     push();
-    fill('black'); // green jungle monster
-    ellipse(this.x, this.y, this.size);
+    // Draw random emoji as the monster
+    textAlign(CENTER, CENTER);
+    textSize(this.size * 1.1); // Scale emoji to fit monster size
+    text(this.emoji, this.x - 20, this.y - 5); // Slight offset to position nicely
 
     // health bar
     fill(255, 0, 0);
@@ -98,7 +104,7 @@ function spawnNewWave() {
 	}
 	
 
-	if (waveNumber % 7=== 0) {
+	if (waveNumber % 2=== 0) {
 		boss = new Boss(width / 2, height * 0.8);
 	}
 	

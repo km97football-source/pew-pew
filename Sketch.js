@@ -1,7 +1,8 @@
 let game;
-let bgImg, gameImg, shurikenimg, pimage;
+let bgImg, gameImg, shurikenimg, pimage, instructionsImg1, instructionsImg2, gameoverImg;
 
 let ninja1, arrow;
+let playerHealth;
 let monsters = [];
 let boss;
 let shurikens = [];
@@ -23,8 +24,25 @@ function preload() {
     () => console.log('Shuriken image loaded'),
     () => console.error('Failed to load shuriken image')
   );
-  pimage = loadImage('assests/GamePaused.png',
+  pimage = loadImage('assests/GamePause.png',
   );
+  instructionsImg1 = loadImage('assests/Instructions1.png',
+	() => console.log('Instructions image 1 loaded'),
+	() => console.error('Failed to load instructions image 1')
+  );
+  instructionsImg2 = loadImage('assests/Instructions2.png',
+	() => console.log('Instructions image 2 loaded'),
+	() => console.error('Failed to load instructions image 2')
+  );
+gameoverImg = loadImage('assests/GameOver.png',
+	() => console.log('Game over image loaded'),
+	() => console.error('Failed to load game over image')
+  );
+  
+  // Make images globally accessible
+  window.instructionsImg1 = instructionsImg1;
+  window.instructionsImg2 = instructionsImg2;
+  window.gameoverImg = gameoverImg;
 }
 
 
@@ -57,6 +75,8 @@ function setup() {
 
 function initGame() {
 	ninja1 = new Ninja(width / 2, height / 2, 20, 'green', 3)
+	playerHealth = new Health(100);
+	playerHealth.damageAmount = 3; // Reset damage to base
 	arrow = new Arrow(ninja1, 50);
 
 	monsters = [];
@@ -71,7 +91,7 @@ function initGame() {
 
 function draw() {
 
-	if (game.state === "menu" || game.state === "pause" || game.state === "instructions") {
+	if (game.state === "menu" || game.state === "pause" || game.state === "instructions" || game.state === "gameover") {
 		game.update();
 		game.display();
 
@@ -92,6 +112,35 @@ function draw() {
 		for (let m of monsters) {
 			m.update(ninja1.x, ninja1.y, collisionManager);
 			m.draw();
+		}
+
+		// Check collision between monsters and player
+		for (let m of monsters) {
+			if (m.alive && m.hitsPlayer(ninja1.x, ninja1.y, ninja1.size)) {
+				playerHealth.takeHit();
+				print("Player hit! Health:", playerHealth.currentHealth);
+			}
+		}
+		
+		// Check collision between boss and player
+		if (boss && boss.alive && boss.hitsPlayer(ninja1.x, ninja1.y, ninja1.size)) {
+			playerHealth.takeHit(true); // true = boss damage
+			print("Player hit by boss! Health:", playerHealth.currentHealth);
+		}
+		
+		// Check if boss was just defeated and increase monster damage
+		if (boss && !boss.alive && boss.health <= 0) {
+			playerHealth.increaseDamage(0.5);
+			boss = null; // prevent duplicate damage increase
+		}
+
+		// Update and display player health
+		playerHealth.update();
+		playerHealth.display(width / 2 - 40, 30, 200, 30);
+		
+		// Check if player is dead
+		if (playerHealth.isDead()) {
+			game.state = "gameover";
 		}
 
 		// Check if all monsters are defeated and spawn new wave
@@ -161,5 +210,8 @@ function keyPressed() {
 		}
 		return false; // Prevent default ESC behavior
 	}
+	
+	// Handle arrow keys for instructions navigation
+	game.handleKeyPressed(key);
 }
 

@@ -7,6 +7,10 @@ class Boss extends Monster {
     this.maxHealth = 200; // 4x more HP
     this.health = this.maxHealth;
     this.speed = random(1, 2); // faster and more dangerous
+    
+    // Randomly pick a boss emoji
+    const emojis = ['👹', '👺', '👽', '🧌'];
+    this.emoji = random(emojis);
   }
 
   // Override takeDamage to give 3 gold instead of 1
@@ -24,14 +28,11 @@ class Boss extends Monster {
     if (!this.alive) return;
 
     push();
-    fill('red'); // red to indicate danger
-    ellipse(this.x, this.y, this.size);
-
-    // Add a border to make it stand out
-    stroke('darkred');
-    strokeWeight(3);
-    noFill();
-    ellipse(this.x, this.y, this.size);
+    
+    // Draw random emoji as the boss
+    textAlign(CENTER, CENTER);
+    textSize(this.size * 1.5); // Scale emoji to fit boss size
+    text(this.emoji, this.x - 25, this.y); // Slight offset to position nicely
 
     // health bar (larger for bigger boss)
     noStroke();
