@@ -7,15 +7,16 @@ class Shop {
 
     this.piercingUnlocked = false;
     this.doubleUnlocked = false;
+    this.waveUnlocked = false; // NEW
   }
 
   display() {
-    background(30, 60, 30); // jungle dark green
+    background(30, 60, 30);
 
     textAlign(CENTER, CENTER);
     rectMode(CENTER);
 
-    // ===== TITLE (JUNGLE STYLE) =====
+    // ===== TITLE =====
     fill(0, 100, 0);
     textSize(64);
     text("SHOP", width / 2 + 4, 84);
@@ -33,29 +34,24 @@ class Shop {
     let gap = 160;
 
     // ==============================
-    // 🌿 PIERCING PERK
+    // 🌿 PIERCING
     // ==============================
     let y1 = startY;
 
-    // wood panel
     fill(80, 50, 20);
     rect(centerX, y1 + 40, 360, 130, 15);
 
-    // title shadow
     fill(0, 80, 0);
     textSize(26);
     text("Piercing Shuriken", centerX + 2, y1 + 2);
 
-    // title main
     fill(180, 255, 180);
     text("Piercing Shuriken", centerX, y1);
 
-    // description
     fill(200, 255, 200);
     textSize(16);
     text("Goes through enemies + extra damage", centerX, y1 + 30);
 
-    // button
     fill(this.isHovering(centerX, y1 + 80) ? color(50,200,50) : color(30,150,30));
     rect(centerX, y1 + 80, this.buttonW, this.buttonH, 12);
 
@@ -64,7 +60,7 @@ class Shop {
     text(this.piercingUnlocked ? "OWNED" : "BUY (10)", centerX, y1 + 80);
 
     // ==============================
-    // 🌿 DOUBLE PERK
+    // 🌿 DOUBLE
     // ==============================
     let y2 = startY + gap;
 
@@ -90,25 +86,52 @@ class Shop {
     text(this.doubleUnlocked ? "OWNED" : "BUY (15)", centerX, y2 + 80);
 
     // ==============================
-    // 🔙 BACK BUTTON
+    // 🌪️ SHURIKEN WAVE (NEW)
     // ==============================
     let y3 = startY + gap * 2;
 
-    fill(this.isHovering(centerX, y3) ? color(255,120,120) : color(200,80,80));
-    rect(centerX, y3, this.buttonW, this.buttonH, 12);
+    fill(80, 50, 20);
+    rect(centerX, y3 + 40, 360, 130, 15);
+
+    fill(0, 80, 0);
+    textSize(26);
+    text("Shuriken Wave", centerX + 2, y3 + 2);
+
+    fill(180, 255, 180);
+    text("Shuriken Wave", centerX, y3);
+
+    fill(200, 255, 200);
+    textSize(16);
+    text("Shoots 7 shurikens in a spread", centerX, y3 + 30);
+
+    fill(this.isHovering(centerX, y3 + 80) ? color(200,200,80) : color(160,160,40));
+    rect(centerX, y3 + 80, this.buttonW, this.buttonH, 12);
 
     fill(0);
     textSize(18);
-    text("BACK", centerX, y3);
+    text(this.waveUnlocked ? "OWNED" : "BUY (20)", centerX, y3 + 80);
+
+    // ==============================
+    // 🔙 BACK BUTTON
+    // ==============================
+    let y4 = startY + gap * 3;
+
+    fill(this.isHovering(centerX, y4) ? color(255,120,120) : color(200,80,80));
+    rect(centerX, y4, this.buttonW, this.buttonH, 12);
+
+    fill(0);
+    textSize(18);
+    text("BACK", centerX, y4);
 
     // CLICK ZONES
     this.pierceY = y1 + 80;
     this.doubleY = y2 + 80;
-    this.backY = y3;
+    this.waveY = y3 + 80; // NEW
+    this.backY = y4;
   }
 
   handleMousePressed() {
-    // BUY PIERCING
+    // PIERCING
     if (
       this.isHovering(width / 2, this.pierceY) &&
       !this.piercingUnlocked &&
@@ -118,7 +141,7 @@ class Shop {
       this.piercingUnlocked = true;
     }
 
-    // BUY DOUBLE
+    // DOUBLE
     if (
       this.isHovering(width / 2, this.doubleY) &&
       !this.doubleUnlocked &&
@@ -128,7 +151,17 @@ class Shop {
       this.doubleUnlocked = true;
     }
 
-    // BACK TO MENU
+    // 🌪️ WAVE
+    if (
+      this.isHovering(width / 2, this.waveY) &&
+      !this.waveUnlocked &&
+      this.coins >= 20
+    ) {
+      this.coins -= 20;
+      this.waveUnlocked = true;
+    }
+
+    // BACK
     if (this.isHovering(width / 2, this.backY)) {
       game.state = "menu";
     }
