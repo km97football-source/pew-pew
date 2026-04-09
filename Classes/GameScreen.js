@@ -65,6 +65,10 @@ class GameScreen {
       if (gameImg) {
         image(gameImg, 0, 0, width, height);
       }
+    } else if (this.state === "shop") {
+      if (shop) {
+        shop.display(this);
+      }
     } else if (this.state === "pause") {
       if (pimage) {
         image(pimage, 0, 0, width, height);
@@ -225,6 +229,10 @@ class GameScreen {
   handleMousePressed() {
     if (this.state === "menu" && this.isHovering(this.startX, this.startY)) {
       this.state = "game";
+    } else if (this.state === "shop") {
+      if (shop) {
+        shop.handleClick(mouseX, mouseY, this);
+      }
     } else if (this.state === "pause") {
       if (this.isHovering(this.mainMenuX, this.mainMenuY)) {
         this.state = "menu";

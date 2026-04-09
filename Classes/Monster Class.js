@@ -94,13 +94,23 @@ function allMonstersDefeated() {
 
 function spawnNewWave() {
 	waveNumber++;
-	let randomCount = random(2, 6); // spawn 2-5 monsters
+	
+	// Increase enemy HP after every boss round (every 2 waves)
+	let bossRoundsCompleted = floor((waveNumber - 1) / 2);
+	let hpMultiplier = 1 + (bossRoundsCompleted * 0.05); // +5% HP per boss round
+	
+	// Increase max enemies every 7 rounds
+	let maxEnemies = 5 + floor(waveNumber / 7); // base 5, +1 every 7 waves
+	let randomCount = random(2, maxEnemies + 1);
 	randomCount = floor(randomCount);
 	
 	for (let i = 0; i < randomCount; i++) {
 		let randomX = random(width * 0.2, width * 0.8);
 		let randomY = random(height * 0.2, height * 0.6);
-		monsters.push(new Monster(randomX, randomY));
+		let newMonster = new Monster(randomX, randomY);
+		newMonster.maxHealth = floor(50 * hpMultiplier);
+		newMonster.health = newMonster.maxHealth;
+		monsters.push(newMonster);
 	}
 	
 
@@ -108,5 +118,5 @@ function spawnNewWave() {
 		boss = new Boss(width / 2, height * 0.8);
 	}
 	
-	print("Wave " + waveNumber + " spawned! Monsters: " + randomCount);
+	print("Wave " + waveNumber + " spawned! Monsters: " + randomCount + " | HP Multiplier: " + hpMultiplier.toFixed(2));
 }

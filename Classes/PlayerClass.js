@@ -4,12 +4,20 @@ class Ninja {
 		this.y = y;
 		this.size = size;
 		this.colour = colour;
+		this.baseSpeed = speed;
 		this.speed = speed;
 	}
 
 	update(collisionManager) {
 		let prevX = this.x;
 		let prevY = this.y;
+
+		// Reduce speed by 30% if boss is alive
+		if (boss !== null && boss.alive) {
+			this.speed = this.baseSpeed * 0.7; // 70% of original speed (30% reduction)
+		} else {
+			this.speed = this.baseSpeed; // Normal speed
+		}
 
 		if (keyIsDown(65) === true) { //A
 			this.x = this.x - this.speed;

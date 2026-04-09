@@ -1,5 +1,6 @@
 let game;
 let bgImg, gameImg, shurikenimg, pimage, instructionsImg1, instructionsImg2, gameoverImg;
+let hitSound, throwSound, dmgtakenSound;
 
 let ninja1, arrow;
 let playerHealth;
@@ -8,6 +9,7 @@ let boss;
 let shurikens = [];
 let lastShurikenTime = 0;
 let shurikenDelay = 250;
+let shop;
 
 let collisionManager;
 
@@ -38,8 +40,20 @@ gameoverImg = loadImage('assests/GameOver.png',
 	() => console.log('Game over image loaded'),
 	() => console.error('Failed to load game over image')
   );
-  
-  // Make images globally accessible
+
+	hitSound = loadSound('assests/HitSound.mp3',
+		() => console.log('Hit sound loaded'),
+		() => console.error('Failed to load hit sound')
+	);
+	throwSound = loadSound('assests/ThrowingSound.mp3',
+		() => console.log('Throw sound loaded'),
+		() => console.error('Failed to load throw sound')
+	);
+	dmgtakenSound = loadSound('assests/CharacterDamage.mp3',
+		() => console.log('Damage taken sound loaded'),
+		() => console.error('Failed to load damage taken sound')
+	);
+
   window.instructionsImg1 = instructionsImg1;
   window.instructionsImg2 = instructionsImg2;
   window.gameoverImg = gameoverImg;
@@ -77,7 +91,10 @@ function initGame() {
 	ninja1 = new Ninja(width / 2, height / 2, 20, 'green', 3)
 	playerHealth = new Health(100);
 	playerHealth.damageAmount = 3; // Reset damage to base
+	playerHealth.maxHealth = 100; // Reset max health
 	arrow = new Arrow(ninja1, 50);
+	shop = new Shop();
+	shurikenDelay = 250; // Reset fire rate
 
 	monsters = [];
 	monsters.push(new Monster(width / 4, height / 4));
@@ -117,14 +134,19 @@ function draw() {
 		// Check collision between monsters and player
 		for (let m of monsters) {
 			if (m.alive && m.hitsPlayer(ninja1.x, ninja1.y, ninja1.size)) {
-				playerHealth.takeHit();
+				if (playerHealth.takeHit()) {
+					setTimeout(() => dmgtakenSound.play(), 100);
+				}
 				print("Player hit! Health:", playerHealth.currentHealth);
+				break;
 			}
 		}
 		
 		// Check collision between boss and player
 		if (boss && boss.alive && boss.hitsPlayer(ninja1.x, ninja1.y, ninja1.size)) {
-			playerHealth.takeHit(true); // true = boss damage
+			if (playerHealth.takeHit(true)) {
+				setTimeout(() => dmgtakenSound.play(), 100);
+			}
 			print("Player hit by boss! Health:", playerHealth.currentHealth);
 		}
 		
@@ -136,15 +158,17 @@ function draw() {
 
 		// Update and display player health
 		playerHealth.update();
-		playerHealth.display(width / 2 - 40, 30, 200, 30);
+		playerHealth.display(width / 2, height - 80, 200, 30);
 		
 		// Check if player is dead
 		if (playerHealth.isDead()) {
 			game.state = "gameover";
 		}
 
-		// Check if all monsters are defeated and spawn new wave
-		if (allMonstersDefeated()) {
+		// Check for boss round completion and activate shop
+		if (allMonstersDefeated() && boss && !boss.alive) {
+			game.state = "shop";
+		} else if (allMonstersDefeated()) {
 			spawnNewWave();
 		}
     
@@ -165,6 +189,7 @@ function draw() {
                 boss.takeDamage(10);
                 shurikens.splice(i, 1);
                 print("Boss hit! Health:", boss.health);
+				hitSound.play();
             } else {
                 // Check collision with all monsters
                 for (let j = monsters.length - 1; j >= 0; j--) {
@@ -173,6 +198,7 @@ function draw() {
                         m.takeDamage(10);
                         shurikens.splice(i, 1);
                         print("Monster hit! Health:", m.health);
+                        hitSound.play();
                         break;
                     }
                 }
@@ -183,16 +209,17 @@ function draw() {
 }
 
 function mousePressed() {
-	if (game.state !== "game") {
+	if (game.state !== "game" && game.state !== "shop") {
 		game.handleMousePressed();
 		if (game.state === "game") {
 			initGame();
 		}
-	} else {
+	} else if (game.state === "game") {
         let currentTime = millis();
         if (currentTime - lastShurikenTime > shurikenDelay) {
             let newShuriken = new Shuriken(ninja1.x, ninja1.y, 5, mouseX, mouseY);
             shurikens.push(newShuriken);
+            throwSound.play();
             lastShurikenTime = currentTime;
             print("shuriken thrown");
         }
