@@ -40,9 +40,7 @@ class GameScreen {
         image(bgImg, 0, 0, width, height);
       }
 
-      fill(255);
-      textSize(60);
-      text("Jungle Adventure", width / 2, height / 2 - 100);
+  
 
       push();
       // hover effect for START
