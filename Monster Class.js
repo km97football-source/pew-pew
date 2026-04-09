@@ -51,7 +51,7 @@ class Monster {
   // Take damage
   takeDamage(amount) {
     this.health -= amount;
-
+    HitSound.play();
     if (this.health <= 0) {
       this.alive = false;
     }
