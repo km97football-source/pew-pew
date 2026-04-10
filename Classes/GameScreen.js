@@ -15,6 +15,8 @@ class GameScreen {
     this.instrY = height / 2 + 210;
     this.backX = width / 2;
     this.backY = height - 100;
+    this.howToX = width / 2;
+    this.howToY = height / 2 + 160;
     
     // Instruction screen tracking
     this.instrPage = 1;
@@ -59,6 +61,22 @@ class GameScreen {
       textSize(24);
       text("START", this.startX, this.startY);
 
+      push();
+      // Instructions button
+      if (this.isHovering(this.howToX, this.howToY)) {
+        fill(255, 200, 0);
+      } else {
+        fill('#eecf9b');
+      }
+      stroke(0);
+      strokeWeight(3);
+      rect(this.howToX, this.howToY, this.buttonW, this.buttonH, 12);
+      noStroke();
+      pop();
+      fill(0);
+      textSize(24);
+      text("HOW TO PLAY", this.howToX, this.howToY);
+
     } else if (this.state === "game") {
       if (gameImg) {
         image(gameImg, 0, 0, width, height);
@@ -98,7 +116,7 @@ class GameScreen {
       pop();
       fill(0);
       textSize(24);
-      text("PLAY AGAIN", this.playAgainX, this.playAgainY);
+      text("RESTART", this.playAgainX, this.playAgainY);
 
       push();
       // Instructions button
@@ -156,7 +174,7 @@ class GameScreen {
       pop();
       fill(0);
       textSize(24);
-      text("PLAY AGAIN", this.playAgainX, this.playAgainY);
+      text("RESTART", this.playAgainX, this.playAgainY);
 
     } else if (this.state === "instructions") {
       // Display instruction images
@@ -223,14 +241,16 @@ class GameScreen {
   handleMousePressed() {
     if (this.state === "menu" && this.isHovering(this.startX, this.startY)) {
       this.state = "game";
-    } else if (this.state === "pause") {
+    }   else if (this.isHovering(this.howToX, this.howToY)){
+      this.state = "instructions";
+    }else if (this.state === "pause") {
       if (this.isHovering(this.mainMenuX, this.mainMenuY)) {
         this.state = "menu";
       } else if (this.isHovering(this.playAgainX, this.playAgainY)) {
         this.state = "game";
       } else if (this.isHovering(this.instrX, this.instrY)) {
         this.state = "instructions";
-      }
+      } 
     } else if (this.state === "gameover") {
       if (this.isHovering(this.mainMenuX, this.mainMenuY)) {
         this.state = "menu";
