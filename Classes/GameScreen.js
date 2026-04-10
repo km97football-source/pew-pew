@@ -81,6 +81,10 @@ class GameScreen {
       if (gameImg) {
         image(gameImg, 0, 0, width, height);
       }
+    } else if (this.state === "shop") {
+      if (shop) {
+        shop.display(this);
+      }
     } else if (this.state === "pause") {
       if (pimage) {
         image(pimage, 0, 0, width, height);
@@ -244,6 +248,11 @@ class GameScreen {
     }   else if (this.isHovering(this.howToX, this.howToY)){
       this.state = "instructions";
     }else if (this.state === "pause") {
+    } else if (this.state === "shop") {
+      if (shop) {
+        shop.handleClick(mouseX, mouseY, this);
+      }
+    } else if (this.state === "pause") {
       if (this.isHovering(this.mainMenuX, this.mainMenuY)) {
         this.state = "menu";
       } else if (this.isHovering(this.playAgainX, this.playAgainY)) {

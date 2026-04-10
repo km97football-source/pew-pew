@@ -23,7 +23,9 @@ class Health {
       }
 
       this.hitTimer = 20; // how long the red flash lasts
+      return true; // Damage was applied
     }
+    return false; // Cooldown still active, no damage taken
   }
 
   update() {
