@@ -17,8 +17,8 @@ class GameScreen {
     this.backY = height - 100;
     this.howToX = width / 2;
     this.howToY = height / 2 + 160;
-    this.shopY = height / 2 + 310;
     this.shopX = width / 2;
+    this.shopY = height / 2 + 260;
     
     // Instruction screen tracking
     this.instrPage = 1;
@@ -28,31 +28,6 @@ class GameScreen {
     this.rightArrowX = width - 50;
     this.rightArrowY = height / 2;
     this.arrowSize = 40;
-
-    //unknown stuff from shop class
-    this.continueX = width / 2;
-    this.continueY = height / 2 + 150;
-    this.goldX = width / 2;
-    this.goldY = 160;
-
-    // Upgrade levels and costs
-    this.speedLevel = 0;
-    this.maxSpeed = 10;
-    this.speedCost = 50;
-
-    this.healthLevel = 0;
-    this.maxHealth = 300;
-    this.healthCost = 100;
-
-    this.fireRateLevel = 0;
-    this.minDelay = 100;
-    this.fireRateCost = 150;
-
-    this.damageLevel = 0;
-    this.maxDamage = 50;
-    this.damageCost = 200;
-
-    this.shurikenDamageBase = 10;
   }
 
   update() {
@@ -104,6 +79,22 @@ class GameScreen {
       textSize(24);
       text("HOW TO PLAY", this.howToX, this.howToY);
 
+      push();
+      // Shop button
+      if (this.isHovering(this.shopX, this.shopY)) {
+        fill(255, 200, 0);
+      } else {
+        fill('#eecf9b');
+      }
+      stroke(0);
+      strokeWeight(3);
+      rect(this.shopX, this.shopY, this.buttonW, this.buttonH, 12);
+      noStroke();
+      pop();
+      fill(0);
+      textSize(24);
+      text("SHOP", this.shopX, this.shopY);
+
     } else if (this.state === "game") {
       if (gameImg) {
         image(gameImg, 0, 0, width, height);
@@ -112,9 +103,6 @@ class GameScreen {
       if (shop) {
         shop.display(this);
       }
-
-
-  
     } else if (this.state === "pause") {
       if (pimage) {
         image(pimage, 0, 0, width, height);
@@ -168,22 +156,6 @@ class GameScreen {
       textSize(24);
       text("INSTRUCTIONS", this.instrX, this.instrY);
 
-            push();
-      // Shop button
-      if (this.isHovering(this.shopX, this.shopY)) {
-        fill(255, 200, 0);
-      } else {
-        fill('#eecf9b');
-      }
-      stroke(0);
-      strokeWeight(3);
-      rect(this.shopX, this.shopY, this.buttonW, this.buttonH, 12);
-      noStroke();
-      pop();
-      fill(0);
-      textSize(24);
-      text("SHOP", this.shopX, this.shopY);
-
     } else if (this.state === "gameover") {
       if (window.gameoverImg) {
         image(window.gameoverImg, 0, 0, width, height);
@@ -225,38 +197,6 @@ class GameScreen {
       fill(0);
       textSize(24);
       text("RESTART", this.playAgainX, this.playAgainY);
-
-      push();
-      // Instructions button
-      if (this.isHovering(this.instrX, this.instrY)) {
-        fill(255, 200, 0);
-      } else {
-        fill('#eecf9b');
-      }
-      stroke(0);
-      strokeWeight(3);
-      rect(this.instrX, this.instrY, this.buttonW, this.buttonH, 12);
-      noStroke();
-      pop();
-      fill(0);
-      textSize(24);
-      text("INSTRUCTIONS", this.instrX, this.instrY);
-
-      push();
-      // Shop button
-      if (this.isHovering(this.shopX, this.shopY)) {
-        fill(255, 200, 0);
-      } else {
-        fill('#eecf9b');
-      }
-      stroke(0);
-      strokeWeight(3);
-      rect(this.shopX, this.shopY, this.buttonW, this.buttonH, 12);
-      noStroke();
-      pop();
-      fill(0);
-      textSize(24);
-      text("SHOP", this.shopX, this.shopY);
 
     } else if (this.state === "instructions") {
       // Display instruction images
@@ -321,34 +261,31 @@ class GameScreen {
   }
 
   handleMousePressed() {
-    if (this.state === "menu" && this.isHovering(this.startX, this.startY)) {
+    if (this.state === "menu") {
+      if (this.isHovering(this.startX, this.startY)){
       this.state = "game";
-    }else if (this.isHovering(this.howToX, this.howToY)){
+      }else if (this.isHovering(this.howToX, this.howToY)){
       this.state = "instructions";
-    }else if (this.state === "pause") {
+      }else if (this.isHovering(this.shopX, this.shopY)){
+      this.state = "shop"; 
+      } 
+    } else if (this.state === "shop") {
+      if (shop) {
+        shop.handleClick(mouseX, mouseY, this);
+      }
+    } else if (this.state === "pause") {
       if (this.isHovering(this.mainMenuX, this.mainMenuY)) {
         this.state = "menu";
       } else if (this.isHovering(this.playAgainX, this.playAgainY)) {
         this.state = "game";
       } else if (this.isHovering(this.instrX, this.instrY)) {
         this.state = "instructions";
-      } else if (this.isHovering(this.shopX, this.shopY)){
-        this.state = "shop";
-      }
-    } else if (this.state === "shop") {
-      if (shop) {
-        shop.handleClick(mouseX, mouseY, this);
       } 
-    
     } else if (this.state === "gameover") {
       if (this.isHovering(this.mainMenuX, this.mainMenuY)) {
         this.state = "menu";
       } else if (this.isHovering(this.playAgainX, this.playAgainY)) {
         this.state = "game";
-      } else if (this.isHovering(this.instrX, this.instrY)) {
-        this.state = "instructions";
-      } else if (this.isHovering(this.shopX, this.shopY)){
-        this.state = "shop";
       }
     } else if (this.state === "instructions") {
       if (this.isHovering(this.backX, this.backY)) {
@@ -389,32 +326,4 @@ class GameScreen {
       mouseY < y + this.arrowSize / 2
     );
   }
-
-  //   buySpeed() {
-  //   ninja.baseSpeed += 2;
-  //   this.speedLevel++;
-  //   Gold -= this.speedCost;
-  //   console.log('Speed upgraded!');
-  // }
-
-  // buyHealth() {
-  //   playerHealth.maxHealth += 20;
-  //   playerHealth.currentHealth = playerHealth.maxHealth; // Full heal
-  //   this.healthLevel++;
-  //   Gold -= this.healthCost;
-  //   console.log('Health upgraded!');
-  // }
-
-  // buyFireRate() {
-  //   shurikenDelay = max(shurikenDelay - 50, this.minDelay);
-  //   this.fireRateLevel++;
-  //   Gold -= this.fireRateCost;
-  //   console.log('Fire rate upgraded!');
-  // }
-
-  // buyDamage() {
-  //   this.damageLevel++;
-  //   Gold -= this.damageCost;
-  //   console.log('Damage upgraded!'); // Damage applied in shuriken hit logic update later
-  // }
 }

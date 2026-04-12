@@ -209,7 +209,7 @@ function draw() {
 }
 
 function mousePressed() {
-	if (game.state !== "game" && game.state !== "shop") {
+	if (game.state !== "game") {
 		game.handleMousePressed();
 		if (game.state === "game") {
 			initGame();
