@@ -108,7 +108,7 @@ function initGame() {
 
 function draw() {
 
-	if (game.state === "menu" || game.state === "pause" || game.state === "instructions" || game.state === "gameover") {
+	if (game.state === "menu" || game.state === "pause" || game.state === "instructions" || game.state === "gameover" || game.state === "shop") {
 		game.update();
 		game.display();
 
