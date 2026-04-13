@@ -1,5 +1,5 @@
 let game;
-let bgImg, gameImg, shurikenimg, pimage, instructionsImg1, instructionsImg2, gameoverImg;
+let bgImg, gameImg, shurikenimg, pimage, instructionsImg1, instructionsImg2, gameoverImg, shopImg;
 let hitSound, throwSound, dmgtakenSound;
 
 let ninja1, arrow;
@@ -36,9 +36,13 @@ function preload() {
 	() => console.log('Instructions image 2 loaded'),
 	() => console.error('Failed to load instructions image 2')
   );
-gameoverImg = loadImage('assests/GameOver.png',
+  gameoverImg = loadImage('assests/GameOver.png',
 	() => console.log('Game over image loaded'),
 	() => console.error('Failed to load game over image')
+  );
+  shopImg = loadImage('assests/Shop.png',
+	() => console.log('Shop image loaded'),
+	() => console.error('Failed to load shop image')
   );
 
 	hitSound = loadSound('assests/HitSound.mp3',

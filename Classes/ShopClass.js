@@ -6,6 +6,14 @@ class Shop {
     this.shopY = height / 2 - 100;
     this.continueX = width / 2;
     this.continueY = height / 2 + 150;
+    this.buySpeedX = width / 2 + 150;
+    this.buySpeedY = height / 2 - 50;
+    this.buyHealthX = width / 2 - 150;
+    this.buyHealthY = height / 2 - 50;
+    this.buyFireX = width / 2 - 150;
+    this.buyFireY = height / 2 + 50;
+    this.buyDamageX = width / 2 + 150;
+    this.buyDamageY = height / 2 + 50;
 
     // Upgrade levels and costs
     this.speedLevel = 0;
@@ -31,93 +39,96 @@ class Shop {
     // Semi-transparent overlay
     fill(0, 0, 0, 150);
     // rect(0, 0, width, height);
-    image(gameImg, 0, 0, width, height);
+    image(shopImg, 0, 0, width, height);
       
-
-    // Shop title
-    fill(255);
     textAlign(CENTER, CENTER);
-    textSize(48);
-    text('SHOP', this.shopX, this.shopY - 120);
 
     // Gold display
+    fill('white');
+    stroke(0);
+    strokeWeight(2);
+    rect(this.shopX, this.shopY - 80, 150, 60, 12);
     fill('gold');
     textSize(28);
     text(`Gold: ${Gold}`, this.shopX, this.shopY - 80);
 
     let yOffset = this.shopY - 20;
-    textSize(20);
-    fill(255);
-
     // Speed Upgrade
     push();
-    text(`Speed Lv${this.speedLevel} (${ninja.baseSpeed.toFixed(1)}): $${this.speedCost}`, this.shopX, yOffset);
-    // push();
-    if (gameScreen.isHovering(this.shopX, yOffset + 10)) {
+    if (gameScreen.isHovering(this.buySpeedX, this.buySpeedY)) {
       fill(255, 200, 0);
     } else {
       fill('#eecf9b');
     }
     stroke(0);
     strokeWeight(3);
-    rect(this.shopX - this.buttonW/2, yOffset + 5, this.buttonW, this.buttonH, 12);
+    rect(this.buySpeedX, this.buySpeedY, this.buttonW, this.buttonH, 12);
+    textSize(20);
+    fill(255);
+    text(`Speed Lv${this.speedLevel} (${ninja1.baseSpeed.toFixed(1)}): $${this.speedCost}`, this.buySpeedX, this.buySpeedY - 50);
     noStroke();
     pop();
     fill(0);
     textSize(18);
-    text('BUY SPEED', this.shopX, yOffset + 35);
+    text('BUY SPEED', this.buySpeedX, this.buySpeedY);
 
     // Health Upgrade
     yOffset += 80;
-    text(`Health Lv${this.healthLevel} (${playerHealth.maxHealth}): $${this.healthCost}`, this.shopX, yOffset);
     push();
-    if (gameScreen.isHovering(this.shopX, yOffset + 10)) {
+    if (gameScreen.isHovering(this.buyHealthX, this.buyHealthY)) {
       fill(255, 200, 0);
     } else {
       fill('#eecf9b');
     }
     stroke(0);
     strokeWeight(3);
-    rect(this.shopX - this.buttonW/2, yOffset + 5, this.buttonW, this.buttonH, 12);
+    rect(this.buyHealthX, this.buyHealthY, this.buttonW, this.buttonH, 12);
+    textSize(20);
+    fill(255);
+    text(`Health Lv${this.healthLevel} (${playerHealth.maxHealth}): $${this.healthCost}`, this.buyHealthX, this.buyHealthY - 50);
     noStroke();
     pop();
     fill(0);
-    text('BUY HEALTH', this.shopX, yOffset + 35);
+    text('BUY HEALTH', this.buyHealthX, this.buyHealthY);
 
     // Fire Rate Upgrade
     yOffset += 80;
-    text(`Fire Rate Lv${this.fireLevel} (${shurikenDelay}ms): $${this.fireRateCost}`, this.shopX, yOffset);
     push();
-    if (gameScreen.isHovering(this.shopX, yOffset + 10)) {
+    if (gameScreen.isHovering(this.buyFireX, this.buyFireY)) {
       fill(255, 200, 0);
     } else {
       fill('#eecf9b');
     }
     stroke(0);
     strokeWeight(3);
-    rect(this.shopX - this.buttonW/2, yOffset + 5, this.buttonW, this.buttonH, 12);
+    rect(this.buyFireX, this.buyFireY, this.buttonW, this.buttonH, 12);
+    textSize(20);
+    fill(255);
+    text(`Fire Rate Lv${this.fireLevel} (${shurikenDelay}ms): $${this.fireRateCost}`, this.buyFireX, this.buyFireY - 50);
     noStroke();
     pop();
     fill(0);
-    text('BUY FIRE RATE', this.shopX, yOffset + 35);
+    text('BUY FIRE RATE', this.buyFireX, this.buyFireY);
 
     // Damage Upgrade
     yOffset += 80;
     let currentDamage = this.shurikenDamageBase + (this.damageLevel * 5);
-    text(`Damage Lv${this.damageLevel} (${currentDamage}): $${this.damageCost}`, this.shopX, yOffset);
     push();
-    if (gameScreen.isHovering(this.shopX, yOffset + 10)) {
+    if (gameScreen.isHovering(this.buyDamageX, this.buyDamageY)) {
       fill(255, 200, 0);
     } else {
       fill('#eecf9b');
     }
     stroke(0);
     strokeWeight(3);
-    rect(this.shopX - this.buttonW/2, yOffset + 5, this.buttonW, this.buttonH, 12);
+    rect(this.buyDamageX, this.buyDamageY, this.buttonW, this.buttonH, 12);
+    textSize(20);
+    fill(255);
+    text(`Damage Lv${this.damageLevel} (${currentDamage}): $${this.damageCost}`, this.buyDamageX, this.buyDamageY - 50);
     noStroke();
     pop();
     fill(0);
-    text('BUY DAMAGE', this.shopX, yOffset + 35);
+    text('BUY DAMAGE', this.buyDamageX, this.buyDamageY);
 
     // Continue button
     push();
@@ -128,7 +139,7 @@ class Shop {
     }
     stroke(0);
     strokeWeight(3);
-    rect(this.continueX - this.buttonW/2, this.continueY - this.buttonH/2, this.buttonW, this.buttonH, 12);
+    rect(this.continueX, this.continueY, this.buttonW, this.buttonH, 12);
     noStroke();
     pop();
     fill(0);
