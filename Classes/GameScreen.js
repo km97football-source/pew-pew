@@ -6,19 +6,19 @@ class GameScreen {
     this.buttonH = 70;
 
     this.startX = width / 2;
-    this.startY = height / 2 + 60;
-    this.playAgainX = width / 2;
-    this.playAgainY = height / 2 + 110;
-    this.mainMenuX = width / 2;
+    this.startY = height / 2 + 30;
+    this.playAgainX = width / 2 - 130;
+    this.playAgainY = height / 2 + 10;
+    this.mainMenuX = width / 2 + 130;
     this.mainMenuY = height / 2 + 10;
-    this.instrX = width / 2;
-    this.instrY = height / 2 + 210;
+    this.instrX = width / 2 + 130;
+    this.instrY = height / 2 + 110;
     this.backX = width / 2;
     this.backY = height - 100;
     this.howToX = width / 2;
-    this.howToY = height / 2 + 160;
-    this.shopX = width / 2;
-    this.shopY = height / 2 + 310;
+    this.howToY = height / 2 + 130;
+    this.shopX = width / 2 - 130;
+    this.shopY = height / 2 + 110;
     
     // Instruction screen tracking
     this.instrPage = 1;
@@ -140,7 +140,7 @@ class GameScreen {
       textSize(24);
       text("INSTRUCTIONS", this.instrX, this.instrY);
 
-            push();
+      push();
       // Shop button
       if (this.isHovering(this.shopX, this.shopY)) {
         fill(255, 200, 0);
@@ -165,6 +165,38 @@ class GameScreen {
         textSize(80);
         text("GAME OVER", width / 2, height / 2 - 150);
       }
+
+       push();
+      // Shop button
+      if (this.isHovering(this.shopX, this.shopY)) {
+        fill(255, 200, 0);
+      } else {
+        fill('#eecf9b');
+      }
+      stroke(0);
+      strokeWeight(3);
+      rect(this.shopX, this.shopY, this.buttonW, this.buttonH, 12);
+      noStroke();
+      pop();
+      fill(0);
+      textSize(24);
+      text("SHOP", this.shopX, this.shopY);
+
+      push();
+      // Instructions button
+      if (this.isHovering(this.instrX, this.instrY)) {
+        fill(255, 200, 0);
+      } else {
+        fill('#eecf9b');
+      }
+      stroke(0);
+      strokeWeight(3);
+      rect(this.instrX, this.instrY, this.buttonW, this.buttonH, 12);
+      noStroke();
+      pop();
+      fill(0);
+      textSize(24);
+      text("INSTRUCTIONS", this.instrX, this.instrY);
 
       push();
       // Main Menu button
@@ -286,7 +318,11 @@ class GameScreen {
         this.state = "menu";
       } else if (this.isHovering(this.playAgainX, this.playAgainY)) {
         this.state = "game";
-      }
+      } else if (this.isHovering(this.instrX, this.instrY)) {
+        this.state = "instructions";
+      } else if (this.isHovering(this.shopX, this.shopY)){
+      this.state = "shop"; 
+      } 
     } else if (this.state === "instructions") {
       if (this.isHovering(this.backX, this.backY)) {
         this.state = "menu";
