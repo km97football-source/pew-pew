@@ -234,6 +234,8 @@ function keyPressed() {
 			game.state = "game";
 		} else if (game.state === "instructions") {
 			game.state = "menu";
+		} else if (game.state === "shop"){
+			game.state = "pause";
 		}
 		return false; // Prevent default ESC behavior
 	}

@@ -18,7 +18,7 @@ class GameScreen {
     this.howToX = width / 2;
     this.howToY = height / 2 + 160;
     this.shopX = width / 2;
-    this.shopY = height / 2 + 260;
+    this.shopY = height / 2 + 310;
     
     // Instruction screen tracking
     this.instrPage = 1;
@@ -78,22 +78,6 @@ class GameScreen {
       fill(0);
       textSize(24);
       text("HOW TO PLAY", this.howToX, this.howToY);
-
-      push();
-      // Shop button
-      if (this.isHovering(this.shopX, this.shopY)) {
-        fill(255, 200, 0);
-      } else {
-        fill('#eecf9b');
-      }
-      stroke(0);
-      strokeWeight(3);
-      rect(this.shopX, this.shopY, this.buttonW, this.buttonH, 12);
-      noStroke();
-      pop();
-      fill(0);
-      textSize(24);
-      text("SHOP", this.shopX, this.shopY);
 
     } else if (this.state === "game") {
       if (gameImg) {
@@ -155,6 +139,22 @@ class GameScreen {
       fill(0);
       textSize(24);
       text("INSTRUCTIONS", this.instrX, this.instrY);
+
+            push();
+      // Shop button
+      if (this.isHovering(this.shopX, this.shopY)) {
+        fill(255, 200, 0);
+      } else {
+        fill('#eecf9b');
+      }
+      stroke(0);
+      strokeWeight(3);
+      rect(this.shopX, this.shopY, this.buttonW, this.buttonH, 12);
+      noStroke();
+      pop();
+      fill(0);
+      textSize(24);
+      text("SHOP", this.shopX, this.shopY);
 
     } else if (this.state === "gameover") {
       if (window.gameoverImg) {
@@ -266,9 +266,7 @@ class GameScreen {
       this.state = "game";
       }else if (this.isHovering(this.howToX, this.howToY)){
       this.state = "instructions";
-      }else if (this.isHovering(this.shopX, this.shopY)){
-      this.state = "shop"; 
-      } 
+      }
     } else if (this.state === "shop") {
       if (shop) {
         shop.handleClick(mouseX, mouseY, this);
@@ -280,7 +278,9 @@ class GameScreen {
         this.state = "game";
       } else if (this.isHovering(this.instrX, this.instrY)) {
         this.state = "instructions";
-      } 
+      } else if (this.isHovering(this.shopX, this.shopY)){
+      this.state = "shop"; 
+      }  
     } else if (this.state === "gameover") {
       if (this.isHovering(this.mainMenuX, this.mainMenuY)) {
         this.state = "menu";
