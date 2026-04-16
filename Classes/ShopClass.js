@@ -104,7 +104,7 @@ class Shop {
     rect(this.buyFireX, this.buyFireY, this.buttonW, this.buttonH, 12);
     textSize(20);
     fill(255);
-    text(`Fire Rate Lv${this.fireLevel} (${shurikenDelay}ms): $${this.fireRateCost}`, this.buyFireX, this.buyFireY - 50);
+    text(`Fire Rate Lv${this.fireRateLevel} (${shurikenDelay}ms): $${this.fireRateCost}`, this.buyFireX, this.buyFireY - 50);
     noStroke();
     pop();
     fill(0);
