@@ -22,15 +22,15 @@ class Shop {
 
     this.healthLevel = 0;
     this.maxHealth = 300;
-    this.healthCost = 100;
+    this.healthCost = 25;
 
     this.fireRateLevel = 0;
     this.minDelay = 100;
-    this.fireRateCost = 150;
+    this.fireRateCost = 50;
 
     this.damageLevel = 0;
     this.maxDamage = 50;
-    this.damageCost = 200;
+    this.damageCost = 100;
 
     this.shurikenDamageBase = 10;
   }
