@@ -95,9 +95,9 @@ function allMonstersDefeated() {
 function spawnNewWave() {
 	waveNumber++;
 	
-	// Increase enemy HP after every boss round (every 2 waves)
-	let bossRoundsCompleted = floor((waveNumber - 1) / 2);
-	let hpMultiplier = 1 + (bossRoundsCompleted * 0.05); // +5% HP per boss round
+// Monster scaling based on bosses defeated
+	let hpMultiplier = 1 + (bossesDefeated * 0.2); // +20% HP per boss defeated
+	let speedMultiplier = 1 + (bossesDefeated * 0.1); // +10% speed per boss defeated
 	
 	// Increase max enemies every 7 rounds
 	let maxEnemies = 5 + floor(waveNumber / 7); // base 5, +1 every 7 waves
@@ -110,6 +110,7 @@ function spawnNewWave() {
 		let newMonster = new Monster(randomX, randomY);
 		newMonster.maxHealth = floor(50 * hpMultiplier);
 		newMonster.health = newMonster.maxHealth;
+		newMonster.speed *= speedMultiplier;
 		monsters.push(newMonster);
 	}
 	

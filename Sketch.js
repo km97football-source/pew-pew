@@ -10,6 +10,7 @@ let shurikens = [];
 let lastShurikenTime = 0;
 let shurikenDelay = 250;
 let shop;
+let bossesDefeated = 0;
 
 let collisionManager;
 
@@ -95,10 +96,11 @@ function initGame() {
 	ninja1 = new Ninja(width / 2, height / 2, 20, 'green', 3)
 	playerHealth = new Health(100);
 	playerHealth.damageAmount = 3; // Reset damage to base
-	playerHealth.maxHealth = 100; // Reset max health
-	arrow = new Arrow(ninja1, 50);
-	shop = new Shop();
-	shurikenDelay = 250; // Reset fire rate
+		playerHealth.maxHealth = 100; // Reset max health
+		arrow = new Arrow(ninja1, 50);
+		shop = new Shop();
+		shurikenDelay = 250; // Reset fire rate
+		bossesDefeated = 0;
 
 	monsters = [];
 	monsters.push(new Monster(width / 4, height / 4));
@@ -157,6 +159,7 @@ function draw() {
 		// Check if boss was just defeated and increase monster damage
 		if (boss && !boss.alive && boss.health <= 0) {
 			playerHealth.increaseDamage(0.5);
+			bossesDefeated++;
 			boss = null; // prevent duplicate damage increase
 		}
 

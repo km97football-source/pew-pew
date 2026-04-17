@@ -22,15 +22,15 @@ class Shop {
 
     this.healthLevel = 0;
     this.maxHealth = 300;
-    this.healthCost = 100;
+    this.healthCost = 25;
 
     this.fireRateLevel = 0;
     this.minDelay = 100;
-    this.fireRateCost = 150;
+    this.fireRateCost = 50;
 
     this.damageLevel = 0;
     this.maxDamage = 50;
-    this.damageCost = 200;
+    this.damageCost = 100;
 
     this.shurikenDamageBase = 10;
   }
@@ -104,7 +104,7 @@ class Shop {
     rect(this.buyFireX, this.buyFireY, this.buttonW, this.buttonH, 12);
     textSize(20);
     fill(255);
-    text(`Fire Rate Lv${this.fireLevel} (${shurikenDelay}ms): $${this.fireRateCost}`, this.buyFireX, this.buyFireY - 50);
+    text(`Fire Rate Lv${this.fireRateLevel} (${shurikenDelay}ms): $${this.fireRateCost}`, this.buyFireX, this.buyFireY - 50);
     noStroke();
     pop();
     fill(0);
