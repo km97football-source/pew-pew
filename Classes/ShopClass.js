@@ -151,7 +151,7 @@ class Shop {
     let buttonTop = this.shopY + 5;
     
     // Speed button
-    if (gameScreen.isHovering(this.shopX, buttonTop + 30) && Gold >= this.speedCost && ninja.baseSpeed < this.maxSpeed) {
+    if (gameScreen.isHovering(this.shopX, buttonTop + 30) && Gold >= this.speedCost && ninja1.baseSpeed < this.maxSpeed) {
       this.buySpeed();
     }
     
@@ -181,7 +181,7 @@ class Shop {
   }
 
   buySpeed() {
-    ninja.baseSpeed += 2;
+    ninja1.baseSpeed += 2;
     this.speedLevel++;
     Gold -= this.speedCost;
     console.log('Speed upgraded!');
@@ -203,9 +203,10 @@ class Shop {
   }
 
   buyDamage() {
+    shurikenDamage += 5;
     this.damageLevel++;
     Gold -= this.damageCost;
-    console.log('Damage upgraded!'); // Damage applied in shuriken hit logic update later
+    console.log('Damage upgraded! Shuriken damage now:', shurikenDamage);
   }
 }
 
