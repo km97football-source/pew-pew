@@ -114,7 +114,7 @@ function spawnNewWave() {
 	}
 	
 
-	if (waveNumber % 2=== 0) {
+	if (waveNumber % 5 === 0) {
 		boss = new Boss(width / 2, height * 0.8);
 	}
 	
